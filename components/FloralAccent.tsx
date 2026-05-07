@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue, MotionStyle } from "framer-motion";
 
 const ROSE_DEEP  = "#C45A70";
 const ROSE_MID   = "#D4808E";
@@ -97,13 +97,13 @@ export default function FloralAccent({
 
   const leafAnim = (sv: MotionValue<number>, delay: number) =>
     timed
-      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.55, delay, type: "spring" as const, bounce: 0.45 }, style: { transformOrigin: "0 0" } as unknown as React.CSSProperties }
-      : { style: { scale: sv, transformOrigin: "0 0" } as unknown as React.CSSProperties };
+      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.55, delay, type: "spring" as const, bounce: 0.45 }, style: { transformOrigin: "0 0" } as MotionStyle }
+      : { style: { scale: sv, transformOrigin: "0 0" } as MotionStyle };
 
   const roseAnim = (sv: MotionValue<number>, delay: number) =>
     timed
-      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.65, delay, type: "spring" as const, bounce: 0.4 }, style: { transformOrigin: "0 0" } as unknown as React.CSSProperties }
-      : { style: { scale: sv, transformOrigin: "0 0" } as unknown as React.CSSProperties };
+      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.65, delay, type: "spring" as const, bounce: 0.4 }, style: { transformOrigin: "0 0" } as MotionStyle }
+      : { style: { scale: sv, transformOrigin: "0 0" } as MotionStyle };
 
   const W = Math.round(160 * size);
   const H = Math.round(540 * size);
