@@ -6,31 +6,21 @@ import FloralAccent from "./FloralAccent";
 const events = [
   {
     year: "2020",
-    title: "First Meeting",
-    description:
-      "Two souls met by chance on a rainy evening in the heart of the city. What started as a simple conversation turned into something neither of us ever expected.",
+    title: "We Met",
+    description: "We found each other — and everything changed.",
     side: "left" as const,
-  },
-  {
-    year: "2022",
-    title: "Our First Adventure",
-    description:
-      "We packed our bags and explored the world together for the first time — discovering that every destination is more beautiful with the right person by your side.",
-    side: "right" as const,
   },
   {
     year: "2024",
-    title: "The Proposal",
-    description:
-      "Under a sky full of stars, on a rooftop in the old city, Hazem got down on one knee with a ring and a heart full of love. Of course, she said yes.",
-    side: "left" as const,
+    title: "We Fell in Love",
+    description: "Somewhere along the way, we fell completely and hopelessly in love.",
+    side: "right" as const,
   },
   {
     year: "2026",
-    title: "Forever Begins",
-    description:
-      "Today we stand before our loved ones to promise each other a lifetime of love, laughter, and adventure. This chapter is only the beginning of our story.",
-    side: "right" as const,
+    title: "Forever",
+    description: "And now we're getting married.",
+    side: "left" as const,
   },
 ];
 
