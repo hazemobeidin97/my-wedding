@@ -5,19 +5,16 @@ import FloralAccent from "./FloralAccent";
 
 const events = [
   {
-    year: "2020",
     title: "We Met",
     description: "We found each other — and everything changed.",
     side: "left" as const,
   },
   {
-    year: "2024",
     title: "We Fell in Love",
     description: "Somewhere along the way, we fell completely and hopelessly in love.",
     side: "right" as const,
   },
   {
-    year: "2026",
     title: "Forever",
     description: "And now we're getting married.",
     side: "left" as const,
@@ -74,7 +71,7 @@ export default function OurStory() {
           <div className="space-y-16">
             {events.map((ev, i) => (
               <motion.div
-                key={ev.year}
+                key={ev.title}
                 initial={{ opacity: 0, x: ev.side === "left" ? -120 : 120 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -91,26 +88,12 @@ export default function OurStory() {
                       ev.side === "left" ? "md:text-right" : "md:text-left"
                     }`}
                   >
-                    {/* Giant year watermark */}
-                    <span
-                      className="absolute pointer-events-none select-none font-heading font-bold text-charcoal/[0.04] leading-none"
-                      style={{
-                        fontSize: "clamp(7rem, 15vw, 11rem)",
-                        bottom: "-0.08em",
-                        right: ev.side === "left" ? "-0.05em" : "auto",
-                        left: ev.side === "right" ? "-0.05em" : "auto",
-                      }}
-                    >
-                      {ev.year}
-                    </span>
-
                     <div className="relative">
                       <h3 className="font-heading text-2xl md:text-3xl text-charcoal mb-3">{ev.title}</h3>
                       <div className={`h-px w-8 bg-gold/45 mb-4 ${ev.side === "left" ? "md:ml-auto" : ""}`} />
                       <p className="font-body text-sm text-stone/75 leading-relaxed font-light">
                         {ev.description}
                       </p>
-                      <p className="font-heading text-sm text-gold/55 italic mt-5">{ev.year}</p>
                     </div>
                   </motion.div>
                 </div>
