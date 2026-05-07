@@ -251,7 +251,7 @@ export default function VideoMoment() {
                   loop
                   playsInline
                   preload="auto"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   animate={{ opacity: phase === "on" ? 1 : 0 }}
                   transition={{ duration: 0.55 }}
                 />
