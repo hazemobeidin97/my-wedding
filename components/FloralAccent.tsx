@@ -97,13 +97,13 @@ export default function FloralAccent({
 
   const leafAnim = (sv: MotionValue<number>, delay: number) =>
     timed
-      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.55, delay, type: "spring" as const, bounce: 0.45 }, style: { transformOrigin: "0 0" } as React.CSSProperties }
-      : { style: { scale: sv, transformOrigin: "0 0" } as React.CSSProperties };
+      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.55, delay, type: "spring" as const, bounce: 0.45 }, style: { transformOrigin: "0 0" } as unknown as React.CSSProperties }
+      : { style: { scale: sv, transformOrigin: "0 0" } as unknown as React.CSSProperties };
 
   const roseAnim = (sv: MotionValue<number>, delay: number) =>
     timed
-      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.65, delay, type: "spring" as const, bounce: 0.4 }, style: { transformOrigin: "0 0" } as React.CSSProperties }
-      : { style: { scale: sv, transformOrigin: "0 0" } as React.CSSProperties };
+      ? { initial: { scale: 0 }, animate: { scale: 1 }, transition: { duration: 0.65, delay, type: "spring" as const, bounce: 0.4 }, style: { transformOrigin: "0 0" } as unknown as React.CSSProperties }
+      : { style: { scale: sv, transformOrigin: "0 0" } as unknown as React.CSSProperties };
 
   const W = Math.round(160 * size);
   const H = Math.round(540 * size);
