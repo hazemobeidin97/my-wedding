@@ -41,7 +41,7 @@ function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; siz
 const STORY = [
   {
     label: "How We Met",
-    text: "Two souls found each other when they least expected it — a chance meeting that changed everything.",
+    text: "Two souls found each other when they least expected it, a chance meeting that changed everything.",
     color: "#C4607A",
   },
   {
@@ -51,7 +51,7 @@ const STORY = [
   },
   {
     label: "Forever Begins",
-    text: "August 25, 2026 — the day we say our vows and begin the greatest adventure of our lives together.",
+    text: "August 25, 2026, the day we say our vows and begin the greatest adventure of our lives together.",
     color: "#C4607A",
   },
 ];

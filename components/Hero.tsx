@@ -93,7 +93,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
           className="font-body tracking-[0.5em] uppercase mb-4"
-          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(232,213,183,0.50)" }}
+          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
           We&rsquo;re Getting Married
         </motion.p>
@@ -120,7 +120,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.15 }}
           className="font-body tracking-[0.3em] uppercase mt-3"
-          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(232,213,183,0.48)" }}
+          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
           August 25, 2026 &nbsp;&middot;&nbsp; Dortmund, Germany
         </motion.p>
