@@ -15,11 +15,22 @@ const PETALS = [
 ];
 
 const PETAL_FILL = [
-  "rgba(215,90,112,0.55)",   // rose
-  "rgba(248,240,244,0.62)",  // white
-  "rgba(200,72,92,0.46)",    // deep rose
-  "rgba(252,248,250,0.58)",  // soft white
+  "rgba(215,90,112,0.55)",
+  "rgba(248,240,244,0.62)",
+  "rgba(200,72,92,0.46)",
+  "rgba(252,248,250,0.58)",
 ];
+
+// Per-petal keyframes with hardcoded values — fixes Safari/iOS CSS variable bug in @keyframes
+const petalCSS = PETALS.map(p => `
+  @keyframes petal-${p.id} {
+    0%   { transform: translateY(-40px) translateX(0) rotate(0deg); opacity: 0; }
+    7%   { opacity: 0.82; }
+    48%  { transform: translateY(50vh) translateX(${Math.round(p.pd * 0.52)}px) rotate(${Math.round(p.ps * 0.48)}deg); }
+    91%  { opacity: 0.28; }
+    100% { transform: translateY(112vh) translateX(${p.pd}px) rotate(${p.ps}deg); opacity: 0; }
+  }
+`).join("");
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -31,6 +42,9 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} id="home" className="relative h-screen overflow-hidden">
+
+      {/* Per-petal keyframes — Safari-safe (no CSS vars inside @keyframes) */}
+      <style dangerouslySetInnerHTML={{ __html: petalCSS }} />
 
       {/* Photo with parallax */}
       <motion.div className="absolute inset-0" style={{ y: photoY }}>
@@ -52,17 +66,15 @@ export default function Hero() {
       <div className="absolute inset-0"
         style={{ background: "linear-gradient(to top, rgba(14,11,8,0.92) 0%, rgba(14,11,8,0.10) 42%, transparent 100%)" }} />
 
-      {/* Floating petals — 7 elegant SVG rose shapes */}
+      {/* Floating petals */}
       {PETALS.map((p, i) => (
         <div key={p.id} aria-hidden className="absolute pointer-events-none"
           style={{
             left: p.left, top: "-50px",
             width: p.size, height: p.size * 1.55,
             opacity: 0,
-            animation: `petal-drift ${p.dur}s ease-in infinite ${p.delay}s`,
-            "--pd": `${p.pd}px`,
-            "--ps": `${p.ps}deg`,
-          } as React.CSSProperties}
+            animation: `petal-${p.id} ${p.dur}s ease-in infinite ${p.delay}s`,
+          }}
         >
           <svg viewBox="0 0 20 31" style={{ width: "100%", height: "100%", display: "block" }} aria-hidden>
             <path
@@ -86,7 +98,6 @@ export default function Hero() {
           We&rsquo;re Getting Married
         </motion.p>
 
-        {/* Names */}
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -104,7 +115,6 @@ export default function Hero() {
           <span style={{ display: "block" }}>Hazem</span>
         </motion.h1>
 
-        {/* Date */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -116,7 +126,6 @@ export default function Hero() {
         </motion.p>
       </div>
 
-      {/* Top rule */}
       <div className="absolute top-0 left-0 right-0 h-px"
         style={{ background: "linear-gradient(to right, transparent, rgba(196,100,118,0.18), transparent)" }} />
     </section>
