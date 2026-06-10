@@ -1,12 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 function r4(n: number) { return parseFloat(n.toFixed(4)); }
 
 function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; size?: number; color?: string }) {
   const cx = size / 2;
   const centerColor = color === "#C4607A" ? "#FAF0F2" : "#C4607A";
+  const svgRef = useRef<SVGSVGElement>(null);
+  const inView = useInView(svgRef, { once: true, amount: 0.2 });
 
   const petals = Array.from({ length: 8 }, (_, i) => {
     const angle = (i / 8) * 360;
@@ -15,10 +18,10 @@ function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; siz
   });
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
+    <svg ref={svgRef} width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
       {petals.map((p, i) => (
         <motion.g key={i}
-          initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
+          initial={{ scale: 0, opacity: 0 }} animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
           transition={{ duration: 0.55, delay: p.d, type: "spring", stiffness: 190, damping: 12 }}
           style={{ transformOrigin: `${cx}px ${cx}px` }}
         >
@@ -27,7 +30,7 @@ function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; siz
         </motion.g>
       ))}
       <motion.circle cx={cx} cy={cx} r={r4(size * 0.1)} fill={centerColor}
-        initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+        initial={{ scale: 0 }} animate={inView ? { scale: 1 } : { scale: 0 }}
         transition={{ delay: delay + 0.6, type: "spring", stiffness: 280, damping: 14 }}
         style={{ transformOrigin: `${cx}px ${cx}px` }}
       />

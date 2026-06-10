@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const EVENTS = [
   { time: "17:00", title: "Guest Arrival",        desc: "Welcome to our celebration — find your seat and soak in the atmosphere." },
@@ -19,6 +20,8 @@ function BloomDot({ delay, index }: { delay: number; index: number }) {
   const cx = size / 2;
   const color       = index % 2 === 0 ? "#C4607A" : "#F5EAEC";
   const centerColor = index % 2 === 0 ? "#FAF0F2" : "#C4607A";
+  const svgRef = useRef<SVGSVGElement>(null);
+  const inView = useInView(svgRef, { once: true, amount: 0.2 });
 
   const petals = Array.from({ length: 8 }, (_, i) => {
     const angle = (i / 8) * 360;
@@ -27,10 +30,10 @@ function BloomDot({ delay, index }: { delay: number; index: number }) {
   });
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
+    <svg ref={svgRef} width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
       {petals.map((p, i) => (
         <motion.g key={i}
-          initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
+          initial={{ scale: 0, opacity: 0 }} animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
           transition={{ duration: 0.45, delay: p.d, type: "spring", stiffness: 220, damping: 12 }}
           style={{ transformOrigin: `${cx}px ${cx}px` }}
         >
@@ -39,7 +42,7 @@ function BloomDot({ delay, index }: { delay: number; index: number }) {
         </motion.g>
       ))}
       <motion.circle cx={cx} cy={cx} r={r4(size * 0.098)} fill={centerColor}
-        initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+        initial={{ scale: 0 }} animate={inView ? { scale: 1 } : { scale: 0 }}
         transition={{ delay: delay + 0.55, type: "spring", stiffness: 280, damping: 14 }}
         style={{ transformOrigin: `${cx}px ${cx}px` }}
       />

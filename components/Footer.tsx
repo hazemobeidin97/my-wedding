@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 function r4(n: number) { return parseFloat(n.toFixed(4)); }
 
@@ -25,6 +26,8 @@ function Plant({ f, fi }: { f: typeof GARDEN[0]; fi: number }) {
   const stemH       = r4(f.size * 1.9);
   const centerColor = f.color === "#C4607A" ? "#FAF0F2" : "#C4607A";
   const leafColor   = f.color;
+  const plantRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(plantRef, { once: true, amount: 0.2 });
 
   const petals = Array.from({ length: 8 }, (_, i) => {
     const angle = (i / 8) * 360;
@@ -43,13 +46,13 @@ function Plant({ f, fi }: { f: typeof GARDEN[0]; fi: number }) {
   const lrx  = r4(f.size * 0.16); const lry = r4(f.size * 0.072);
 
   return (
-    <div style={{ position: "absolute", bottom: 0, left: f.x }}>
+    <div ref={plantRef} style={{ position: "absolute", bottom: 0, left: f.x }}>
       {/* ── Flower head (top of plant) ── */}
       <svg width={f.size} height={f.size} viewBox={`0 0 ${f.size} ${f.size}`} fill="none"
         style={{ display: "block" }}>
         {petals.map((p, i) => (
           <motion.g key={i}
-            initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
+            initial={{ scale: 0, opacity: 0 }} animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
             transition={{ duration: 0.38, delay: p.d, type: "spring", stiffness: 210, damping: 12 }}
             style={{ transformOrigin: `${cx}px ${cx}px` }}
           >
@@ -61,7 +64,7 @@ function Plant({ f, fi }: { f: typeof GARDEN[0]; fi: number }) {
           </motion.g>
         ))}
         <motion.circle cx={cx} cy={cx} r={r4(f.size * 0.1)} fill={centerColor}
-          initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+          initial={{ scale: 0 }} animate={inView ? { scale: 1 } : { scale: 0 }}
           transition={{ delay: f.delay + 0.72, type: "spring", stiffness: 280, damping: 14 }}
           style={{ transformOrigin: `${cx}px ${cx}px` }}
         />
@@ -78,18 +81,16 @@ function Plant({ f, fi }: { f: typeof GARDEN[0]; fi: number }) {
           strokeLinecap="round"
           opacity="0.55"
           initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
+          animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
           transition={{ duration: 0.45, delay: f.delay, ease: "easeOut" }}
         />
         {/* Left leaf */}
         <motion.ellipse
           cx={lx1} cy={ly1} rx={lrx} ry={lry}
           transform={`rotate(-38, ${lx1}, ${ly1})`}
-          fill={leafColor} opacity="0.45"
+          fill={leafColor}
           initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 0.45 }}
-          viewport={{ once: true }}
+          animate={inView ? { scale: 1, opacity: 0.45 } : { scale: 0, opacity: 0 }}
           transition={{ duration: 0.3, delay: f.delay + 0.28, type: "spring", stiffness: 200 }}
           style={{ transformOrigin: `${lx1}px ${ly1}px` }}
         />
@@ -97,10 +98,9 @@ function Plant({ f, fi }: { f: typeof GARDEN[0]; fi: number }) {
         <motion.ellipse
           cx={lx2} cy={ly2} rx={r4(lrx * 0.85)} ry={r4(lry * 0.85)}
           transform={`rotate(38, ${lx2}, ${ly2})`}
-          fill={leafColor} opacity="0.38"
+          fill={leafColor}
           initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 0.38 }}
-          viewport={{ once: true }}
+          animate={inView ? { scale: 1, opacity: 0.38 } : { scale: 0, opacity: 0 }}
           transition={{ duration: 0.28, delay: f.delay + 0.35, type: "spring", stiffness: 200 }}
           style={{ transformOrigin: `${lx2}px ${ly2}px` }}
         />
