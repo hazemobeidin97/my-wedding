@@ -2,195 +2,123 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import FloatingPetals from "./FloatingPetals";
+import Image from "next/image";
 
-function LetterReveal({ text, delay }: { text: string; delay: number }) {
-  return (
-    <>
-      {text.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 48, rotate: i % 2 === 0 ? -10 : 10, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, rotate: 0, filter: "blur(0px)" }}
-          transition={{ delay: delay + i * 0.07, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block"
-        >
-          {char}
-        </motion.span>
-      ))}
-    </>
-  );
-}
+const PETALS = [
+  { id: 0, left: "7%",  delay: 0,    dur: 20, pd:  50, ps:  200, size: 14 },
+  { id: 1, left: "22%", delay: 3.2,  dur: 24, pd: -44, ps: -240, size: 11 },
+  { id: 2, left: "38%", delay: 6.5,  dur: 21, pd:  56, ps:  310, size: 16 },
+  { id: 3, left: "54%", delay: 1.6,  dur: 23, pd: -50, ps: -190, size: 13 },
+  { id: 4, left: "68%", delay: 8.8,  dur: 19, pd:  38, ps:  265, size: 15 },
+  { id: 5, left: "81%", delay: 4.5,  dur: 22, pd: -60, ps: -300, size: 12 },
+  { id: 6, left: "93%", delay: 11.2, dur: 25, pd:  46, ps:  175, size: 14 },
+];
+
+const PETAL_FILL = [
+  "rgba(215,90,112,0.55)",   // rose
+  "rgba(248,240,244,0.62)",  // white
+  "rgba(200,72,92,0.46)",    // deep rose
+  "rgba(252,248,250,0.58)",  // soft white
+];
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const photoY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
 
   return (
-    <section
-      ref={ref}
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: "#0d0608" }}
-    >
-      {/* Pulsing core glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{ opacity: [0.45, 0.9, 0.45] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ background: "radial-gradient(ellipse 70% 45% at 50% 52%, rgba(125,30,70,0.2) 0%, transparent 100%)" }}
-      />
+    <section ref={sectionRef} id="home" className="relative h-screen overflow-hidden">
 
-      {/* Edge vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at center, transparent 28%, rgba(0,0,0,0.82) 100%)" }}
-      />
-
-      {/* Gold cinematic lines */}
-      {[true, false].map((isTop, i) => (
-        <motion.div
-          key={i}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 3, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className={`absolute ${isTop ? "top-0" : "bottom-0"} left-0 right-0 h-px origin-left pointer-events-none`}
-          style={{ background: "linear-gradient(to right, transparent, rgba(201,168,76,0.5), transparent)" }}
+      {/* Photo with parallax */}
+      <motion.div className="absolute inset-0" style={{ y: photoY }}>
+        <Image
+          src="/photos/proposal.jpg"
+          alt="Layla & Hazem"
+          fill
+          className="object-cover"
+          style={{ objectPosition: "center 30%" }}
+          priority
+          sizes="100vw"
         />
-      ))}
+      </motion.div>
 
-      <FloatingPetals />
+      {/* Overlays */}
+      <div className="absolute inset-0" style={{ background: "rgba(7,3,2,0.20)" }} />
+      <div className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at center, transparent 28%, rgba(7,5,3,0.48) 100%)" }} />
+      <div className="absolute inset-0"
+        style={{ background: "linear-gradient(to top, rgba(14,11,8,0.92) 0%, rgba(14,11,8,0.10) 42%, transparent 100%)" }} />
 
-      {/* Corner ornaments */}
-      {["top-14 left-8", "top-14 right-8", "bottom-14 left-8", "bottom-14 right-8"].map((pos, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 2.8 + i * 0.1 }}
-          className={`absolute ${pos} w-10 h-10 pointer-events-none
-            ${i < 2 ? "border-t" : "border-b"}
-            ${i % 2 === 0 ? "border-l" : "border-r"}
-            border-gold/22`}
-        />
-      ))}
-
-      {/* Main content */}
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center px-6">
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.3 }}
-          className="font-body text-[9px] tracking-[0.62em] uppercase text-gold/42 mb-12"
+      {/* Floating petals — 7 elegant SVG rose shapes */}
+      {PETALS.map((p, i) => (
+        <div key={p.id} aria-hidden className="absolute pointer-events-none"
+          style={{
+            left: p.left, top: "-50px",
+            width: p.size, height: p.size * 1.55,
+            opacity: 0,
+            animation: `petal-drift ${p.dur}s ease-in infinite ${p.delay}s`,
+            "--pd": `${p.pd}px`,
+            "--ps": `${p.ps}deg`,
+          } as React.CSSProperties}
         >
-          We&apos;re Getting Married
+          <svg viewBox="0 0 20 31" style={{ width: "100%", height: "100%", display: "block" }} aria-hidden>
+            <path
+              d="M10 0 C15 4, 20 12, 18 20 C16 26, 13 31, 10 31 C7 31, 4 26, 2 20 C0 12, 5 4, 10 0Z"
+              fill={PETAL_FILL[i % 4]}
+            />
+          </svg>
+        </div>
+      ))}
+
+      {/* Content — lower third */}
+      <div className="absolute inset-x-0 bottom-0 pb-16 sm:pb-24 px-6 text-center z-10">
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="font-body tracking-[0.5em] uppercase mb-4"
+          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(232,213,183,0.50)" }}
+        >
+          We&rsquo;re Getting Married
         </motion.p>
 
-        {/* Names with letter-by-letter twist reveal */}
-        <h1
-          className="font-display leading-[0.85] select-none"
+        {/* Names */}
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display select-none"
           style={{
-            fontSize: "clamp(5rem, 13vw, 13rem)",
-            color: "#F5EDE0",
-            textShadow: "0 0 100px rgba(201,168,76,0.12), 0 2px 40px rgba(0,0,0,1)",
+            fontSize: "clamp(3rem, 10vw, 7.5rem)",
+            color: "#FFFFFF",
+            lineHeight: 1.1,
+            textShadow: "0 2px 20px rgba(0,0,0,0.55)",
           }}
         >
-          <LetterReveal text="Hazem" delay={0.6} />
-        </h1>
-
-        {/* & separator */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 1.35 }}
-          className="flex items-center justify-center gap-5 my-1"
-        >
-          <div className="h-px flex-1 max-w-[100px]"
-            style={{ background: "linear-gradient(to right, transparent, rgba(201,168,76,0.4))" }} />
-          <motion.span
-            animate={{
-              textShadow: [
-                "0 0 8px rgba(201,168,76,0.2)",
-                "0 0 50px rgba(201,168,76,0.9)",
-                "0 0 8px rgba(201,168,76,0.2)",
-              ],
-            }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-            className="font-heading text-2xl text-gold italic"
-          >
-            &amp;
-          </motion.span>
-          <div className="h-px flex-1 max-w-[100px]"
-            style={{ background: "linear-gradient(to left, transparent, rgba(201,168,76,0.4))" }} />
-        </motion.div>
-
-        <h1
-          className="font-display leading-[0.85] select-none"
-          style={{
-            fontSize: "clamp(5rem, 13vw, 13rem)",
-            color: "#F5EDE0",
-            textShadow: "0 0 100px rgba(201,168,76,0.12), 0 2px 40px rgba(0,0,0,1)",
-          }}
-        >
-          <LetterReveal text="Layla" delay={1.5} />
-        </h1>
+          <span style={{ display: "block" }}>Layla</span>
+          <span style={{ display: "block", fontStyle: "italic", fontWeight: 400, letterSpacing: "0.1em", opacity: 0.65, lineHeight: 1.1, fontSize: "0.42em" }}>&amp;</span>
+          <span style={{ display: "block" }}>Hazem</span>
+        </motion.h1>
 
         {/* Date */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 2.5 }}
-          className="mt-10 space-y-2"
+          transition={{ duration: 1, delay: 1.15 }}
+          className="font-body tracking-[0.3em] uppercase mt-3"
+          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(232,213,183,0.48)" }}
         >
-          <p className="font-heading text-xl md:text-2xl italic" style={{ color: "rgba(245,237,224,0.52)" }}>
-            August 25, 2026
-          </p>
-          <p className="font-body text-[9px] tracking-[0.42em] uppercase" style={{ color: "rgba(245,237,224,0.25)" }}>
-            Dortmund, Germany
-          </p>
-        </motion.div>
+          August 25, 2026 &nbsp;&middot;&nbsp; Dortmund, Germany
+        </motion.p>
+      </div>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 3 }}
-          className="mt-12 flex items-center justify-center gap-5 flex-wrap"
-        >
-          <a
-            href="#rsvp"
-            className="px-10 py-4 bg-gold text-charcoal font-body text-[10px] tracking-[0.3em] uppercase hover:bg-champagne transition-colors duration-300"
-          >
-            RSVP Now
-          </a>
-          <a
-            href="#story"
-            className="px-10 py-4 border border-cream/20 text-cream/50 font-body text-[10px] tracking-[0.3em] uppercase hover:border-cream/40 hover:text-cream/80 transition-all duration-300"
-          >
-            Our Story
-          </a>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 4, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span className="font-body text-[8px] tracking-[0.45em] uppercase" style={{ color: "rgba(201,168,76,0.32)" }}>
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 12, 0], opacity: [0.2, 0.7, 0.2] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
-          className="w-px h-10"
-          style={{ background: "linear-gradient(to bottom, rgba(201,168,76,0.65), transparent)" }}
-        />
-      </motion.div>
+      {/* Top rule */}
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(196,100,118,0.18), transparent)" }} />
     </section>
   );
 }

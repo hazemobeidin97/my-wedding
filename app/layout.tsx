@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Great_Vibes, Raleway } from "next/font/google";
+import { Cormorant_Garamond, Great_Vibes, Playfair_Display, Raleway } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -15,6 +15,13 @@ const greatVibes = Great_Vibes({
   weight: "400",
 });
 
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
+});
+
 const raleway = Raleway({
   variable: "--font-raleway",
   subsets: ["latin"],
@@ -22,7 +29,7 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Hazem & Layla — Wedding",
+  title: "Layla & Hazem — Wedding",
   description: "Join us as we celebrate our love · August 25, 2026",
 };
 
@@ -32,9 +39,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${greatVibes.variable} ${raleway.variable}`}
+      className={`${cormorant.variable} ${greatVibes.variable} ${playfair.variable} ${raleway.variable}`}
     >
-      <body className="bg-ivory text-charcoal antialiased">{children}</body>
+      <body className="bg-deep text-pearl antialiased">{children}</body>
     </html>
   );
 }

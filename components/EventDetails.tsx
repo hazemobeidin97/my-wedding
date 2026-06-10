@@ -1,139 +1,182 @@
 "use client";
 
 import { motion } from "framer-motion";
-import FloralAccent from "./FloralAccent";
 
-function Corner({ pos }: { pos: string }) {
-  const isTop = pos.includes("top");
-  const isLeft = pos.includes("left");
+const EVENTS = [
+  { time: "17:00", title: "Guest Arrival",        desc: "Welcome to our celebration — find your seat and soak in the atmosphere." },
+  { time: "17:30", title: "Welcome Drinks",        desc: "Champagne, cocktails & light refreshments in the garden."               },
+  { time: "18:00", title: "Wedding Ceremony",      desc: "The sacred moment — our vows, our rings, our forever."                  },
+  { time: "20:00", title: "Wedding Dinner",        desc: "A feast prepared with love, shared with the people we cherish most."    },
+  { time: "22:00", title: "Celebration & Dancing", desc: "Music fills the room — dance with us all night long."                   },
+  { time: "00:00", title: "Special Moments",       desc: "A night written in stars, a memory carried forever."                    },
+];
+
+function r4(n: number) { return parseFloat(n.toFixed(4)); }
+
+// Single-color rose dot — alternates rose / white per event
+function BloomDot({ delay, index }: { delay: number; index: number }) {
+  const size = 56;
+  const cx = size / 2;
+  const color       = index % 2 === 0 ? "#C4607A" : "#F5EAEC";
+  const centerColor = index % 2 === 0 ? "#FAF0F2" : "#C4607A";
+
+  const petals = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i / 8) * 360;
+    const rad = (angle * Math.PI) / 180;
+    return { angle, px: r4(cx + Math.cos(rad) * size * 0.28), py: r4(cx + Math.sin(rad) * size * 0.28), d: delay + i * 0.06 };
+  });
+
   return (
-    <div
-      className={`absolute w-8 h-8 ${pos} ${isTop ? "border-t" : "border-b"} ${
-        isLeft ? "border-l" : "border-r"
-      } border-gold/35`}
-    />
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
+      {petals.map((p, i) => (
+        <motion.g key={i}
+          initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: p.d, type: "spring", stiffness: 220, damping: 12 }}
+          style={{ transformOrigin: `${cx}px ${cx}px` }}
+        >
+          <ellipse cx={p.px} cy={p.py} rx={r4(size * 0.1)} ry={r4(size * 0.21)}
+            transform={`rotate(${p.angle + 90}, ${p.px}, ${p.py})`} fill={color} />
+        </motion.g>
+      ))}
+      <motion.circle cx={cx} cy={cx} r={r4(size * 0.098)} fill={centerColor}
+        initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+        transition={{ delay: delay + 0.55, type: "spring", stiffness: 280, damping: 14 }}
+        style={{ transformOrigin: `${cx}px ${cx}px` }}
+      />
+    </svg>
   );
 }
 
 export default function EventDetails() {
   return (
-    <section id="details" className="py-28 bg-cream overflow-hidden relative">
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 hidden xl:block">
-        <FloralAccent opacity={0.42} />
+    <section id="timeline" className="py-20 sm:py-32 relative overflow-hidden"
+      style={{ background: "#140F0B" }}>
+
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-0 right-0" style={{ width: 300, height: 300,
+          background: "radial-gradient(circle, rgba(196,112,122,0.07) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-0 left-0" style={{ width: 320, height: 320,
+          background: "radial-gradient(circle, rgba(201,169,110,0.05) 0%, transparent 70%)" }} />
       </div>
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden xl:block">
-        <FloralAccent mirror opacity={0.42} />
-      </div>
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
+
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.2), transparent)" }} />
+
+      <div className="max-w-4xl mx-auto px-5 sm:px-6 relative z-10">
+
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-center mb-20"
+          transition={{ duration: 1.1 }}
+          className="text-center mb-16 sm:mb-24"
         >
-          <p className="font-body text-[11px] tracking-[0.45em] uppercase text-stone mb-4">
-            Save the Date
+          <p className="font-body tracking-[0.55em] uppercase mb-3"
+            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(201,169,110,0.55)" }}>
+            August 25, 2026
           </p>
-          <h2 className="font-display text-6xl md:text-8xl text-burgundy mb-5">Event Details</h2>
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
+          <h2 className="font-display select-none"
+            style={{ fontSize: "clamp(3rem, 11vw, 7.5rem)", color: "#FFFFFF" }}>
+            The Day
+          </h2>
+          <div className="flex items-center justify-center gap-4 mt-5">
+            <div className="h-px w-14"
+              style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.3))" }} />
+            <div className="w-1.5 h-1.5 rotate-45" style={{ background: "rgba(201,169,110,0.5)" }} />
+            <div className="h-px w-14"
+              style={{ background: "linear-gradient(to left, transparent, rgba(201,169,110,0.3))" }} />
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Ceremony */}
+        {/* Timeline */}
+        <div className="relative">
           <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -8, boxShadow: "0 28px 70px rgba(125,30,70,0.11)" }}
-            className="relative bg-ivory p-12 text-center border border-gold/20 shadow-sm cursor-default transition-shadow duration-300"
-          >
-            <Corner pos="top-4 left-4" />
-            <Corner pos="top-4 right-4" />
-            <Corner pos="bottom-4 left-4" />
-            <Corner pos="bottom-4 right-4" />
-
-            <div className="mb-8">
-              <svg className="w-10 h-10 mx-auto text-gold/60" viewBox="0 0 40 40" fill="none">
-                <path d="M20 4L22.5 11H30L24 15.5L26.5 22.5L20 18L13.5 22.5L16 15.5L10 11H17.5L20 4Z" fill="currentColor" />
-                <path d="M20 22C14 26 8 30 8 36H32C32 30 26 26 20 22Z" fill="currentColor" fillOpacity="0.25" />
-              </svg>
-            </div>
-
-            <p className="font-body text-[10px] tracking-[0.3em] uppercase text-stone mb-2">The</p>
-            <h3 className="font-heading text-4xl text-charcoal mb-8">Ceremony</h3>
-
-            <div className="space-y-2 font-body text-sm text-stone/80 font-light">
-              <p className="font-medium text-charcoal font-body">Tuesday, August 25, 2026</p>
-              <p>6:00 PM</p>
-              <div className="h-px w-10 bg-gold/40 mx-auto my-5" />
-              <p className="font-medium text-charcoal font-body">Dortmund Venue</p>
-              <p>12 Al-Madeena Street</p>
-              <p>Dortmund, Germany</p>
-            </div>
-          </motion.div>
-
-          {/* Reception */}
+            initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }}
+            transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px origin-top hidden md:block"
+            style={{ background: "linear-gradient(to bottom, rgba(196,112,122,0.5), rgba(201,169,110,0.4), rgba(139,48,64,0.3))" }}
+          />
           <motion.div
-            initial={{ opacity: 0, x: 80 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -8, boxShadow: "0 28px 70px rgba(0,0,0,0.35)" }}
-            className="relative bg-burgundy p-12 text-center text-ivory overflow-hidden shadow-md cursor-default"
-          >
-            {/* Background orbs */}
-            <motion.div
-              className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-white/5"
-              animate={{ scale: [1, 1.15, 1] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-white/5"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
+            initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }}
+            transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-6 sm:left-8 top-0 bottom-0 w-px origin-top md:hidden"
+            style={{ background: "linear-gradient(to bottom, rgba(196,112,122,0.5), rgba(201,169,110,0.3))" }}
+          />
 
-            <div className="relative">
-              <div className="mb-8">
-                <svg className="w-10 h-10 mx-auto text-gold" viewBox="0 0 40 40" fill="none">
-                  <circle cx="20" cy="20" r="7" stroke="currentColor" strokeWidth="1.5" />
-                  <path d="M20 4V9M20 31V36M4 20H9M31 20H36M8.1 8.1L11.7 11.7M28.3 28.3L31.9 31.9M31.9 8.1L28.3 11.7M11.7 28.3L8.1 31.9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </div>
+          <div className="space-y-0">
+            {EVENTS.map((ev, i) => {
+              const isRight = i % 2 === 0;
+              return (
+                <motion.div key={ev.title}
+                  initial={{ opacity: 0, x: isRight ? 50 : -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 1, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  className={`relative flex items-center pb-10 sm:pb-12 pl-16 sm:pl-20 md:pl-0 ${
+                    isRight ? "md:flex-row" : "md:flex-row-reverse"
+                  }`}
+                >
+                  <div className="hidden md:block w-1/2" />
 
-              <p className="font-body text-[10px] tracking-[0.3em] uppercase text-ivory/55 mb-2">The</p>
-              <h3 className="font-heading text-4xl text-ivory mb-8">Reception</h3>
+                  {/* Desktop: blooming flower dot */}
+                  <div className="absolute left-1/2 -translate-x-1/2 hidden md:block z-10">
+                    <BloomDot delay={i * 0.12} index={i} />
+                  </div>
 
-              <div className="space-y-2 font-body text-sm text-ivory/75 font-light">
-                <p className="font-medium text-ivory font-body">Tuesday, August 25, 2026</p>
-                <p>8:00 PM — 1:00 AM</p>
-                <div className="h-px w-10 bg-gold/50 mx-auto my-5" />
-                <p className="font-medium text-ivory font-body">Dortmund Venue</p>
-                <p>12 Al-Madeena Street</p>
-                <p>Dortmund, Germany</p>
-              </div>
-            </div>
-          </motion.div>
+                  {/* Mobile dot */}
+                  <div className="absolute left-6 sm:left-8 -translate-x-1/2 top-0 md:hidden z-10">
+                    <BloomDot delay={i * 0.12} index={i} />
+                  </div>
+
+                  {/* Card */}
+                  <div
+                    className={`w-full md:w-[calc(50%-2.5rem)] p-5 sm:p-8 ${isRight ? "md:ml-10" : "md:mr-10"}`}
+                    style={{
+                      background: "rgba(255,255,255,0.026)",
+                      border: "1px solid rgba(196,112,122,0.12)",
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <div className="flex items-baseline gap-4 mb-3">
+                      <span className="font-heading tabular-nums"
+                        style={{ fontSize: "clamp(1.4rem, 4vw, 2rem)", color: "#C9A96E" }}>
+                        {ev.time}
+                      </span>
+                      <div className="h-px flex-1"
+                        style={{ background: "linear-gradient(to right, rgba(196,112,122,0.35), transparent)" }} />
+                    </div>
+                    <h3 className="font-heading mb-2"
+                      style={{ fontSize: "clamp(1.1rem, 3vw, 1.4rem)", color: "rgba(245,237,232,0.88)" }}>
+                      {ev.title}
+                    </h3>
+                    <p className="font-body text-sm leading-relaxed"
+                      style={{ color: "rgba(245,237,232,0.38)", fontSize: "clamp(12px, 2vw, 13px)" }}>
+                      {ev.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="text-center mt-10 font-body text-[11px] tracking-[0.28em] uppercase text-stone"
+        {/* Dress code */}
+        <motion.div
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="text-center mt-8 sm:mt-12"
         >
-          Dress Code:{" "}
-          <span className="text-burgundy font-medium">Black Tie Optional</span>
-        </motion.p>
+          <p className="font-body tracking-[0.35em] uppercase"
+            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(245,237,232,0.22)" }}>
+            Dress Code —{" "}
+            <span style={{ color: "rgba(201,169,110,0.55)" }}>Black Tie Optional</span>
+          </p>
+        </motion.div>
       </div>
-    </section>
 
+      <div className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.18), transparent)" }} />
+    </section>
   );
 }

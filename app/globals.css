@@ -1,31 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ivory: #FDFAF6;
-  --color-cream: #F5EDE0;
-  --color-blush: #FAD7DC;
-  --color-rose: #D4808E;
-  --color-burgundy: #7D1E46;
-  --color-gold: #C9A84C;
-  --color-champagne: #E8D5A0;
-  --color-stone: #8C7B70;
-  --color-charcoal: #2C2424;
+  --color-pearl:    #F5EDE8;
+  --color-cream:    #EDE3D8;
+  --color-champagne: #E8D5B7;
+  --color-gold:     #C9A96E;
+  --color-gold-dk:  #A07840;
+  --color-rose:     #C4707A;
+  --color-rose-deep: #8B3040;
+  --color-blush:    #E8A0A8;
+  --color-sage:     #6B9E7A;
+  --color-void:     #070503;
+  --color-deep:     #0E0B08;
+  --color-mocha:    #140F0B;
+  --color-espresso: #1A1410;
+  --color-muted:    #9E8878;
 
   --font-display: var(--font-great-vibes);
-  --font-heading: var(--font-cormorant);
-  --font-body: var(--font-raleway);
+  --font-heading:  var(--font-cormorant);
+  --font-body:     var(--font-raleway);
+  --font-names:    var(--font-playfair);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: #FDFAF6;
-  color: #2C2424;
-  font-family: var(--font-body), Georgia, serif;
+  background-color: #0E0B08;
+  color: #F5EDE8;
+  font-family: var(--font-raleway), sans-serif;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-heading), "Times New Roman", serif;
+@keyframes petal-drift {
+  0%   { transform: translateY(-40px) translateX(0) rotate(0deg); opacity: 0; }
+  7%   { opacity: 0.82; }
+  48%  { transform: translateY(50vh) translateX(calc(var(--pd, 50px) * 0.52)) rotate(calc(var(--ps, 220deg) * 0.48)); }
+  91%  { opacity: 0.28; }
+  100% { transform: translateY(112vh) translateX(var(--pd, 50px)) rotate(var(--ps, 220deg)); opacity: 0; }
 }

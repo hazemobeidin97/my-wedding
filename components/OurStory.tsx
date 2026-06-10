@@ -1,117 +1,121 @@
 "use client";
 
 import { motion } from "framer-motion";
-import FloralAccent from "./FloralAccent";
 
-const events = [
+function r4(n: number) { return parseFloat(n.toFixed(4)); }
+
+function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; size?: number; color?: string }) {
+  const cx = size / 2;
+  const centerColor = color === "#C4607A" ? "#FAF0F2" : "#C4607A";
+
+  const petals = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i / 8) * 360;
+    const rad = (angle * Math.PI) / 180;
+    return { angle, px: r4(cx + Math.cos(rad) * size * 0.29), py: r4(cx + Math.sin(rad) * size * 0.29), d: delay + i * 0.065 };
+  });
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
+      {petals.map((p, i) => (
+        <motion.g key={i}
+          initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: p.d, type: "spring", stiffness: 190, damping: 12 }}
+          style={{ transformOrigin: `${cx}px ${cx}px` }}
+        >
+          <ellipse cx={p.px} cy={p.py} rx={r4(size * 0.1)} ry={r4(size * 0.215)}
+            transform={`rotate(${p.angle + 90}, ${p.px}, ${p.py})`} fill={color} />
+        </motion.g>
+      ))}
+      <motion.circle cx={cx} cy={cx} r={r4(size * 0.1)} fill={centerColor}
+        initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+        transition={{ delay: delay + 0.6, type: "spring", stiffness: 280, damping: 14 }}
+        style={{ transformOrigin: `${cx}px ${cx}px` }}
+      />
+    </svg>
+  );
+}
+
+const STORY = [
   {
-    title: "We Met",
-    description: "We found each other — and everything changed.",
-    side: "left" as const,
+    label: "How We Met",
+    text: "Two souls found each other when they least expected it — a chance meeting that changed everything.",
+    color: "#C4607A",
   },
   {
-    title: "We Fell in Love",
-    description: "Somewhere along the way, we fell completely and hopelessly in love.",
-    side: "right" as const,
+    label: "The Proposal",
+    text: "Under the open sky, with a heart full of love, the question was asked and the answer was yes.",
+    color: "#F5EAEC",
   },
   {
-    title: "Forever",
-    description: "And now we're getting married.",
-    side: "left" as const,
+    label: "Forever Begins",
+    text: "August 25, 2026 — the day we say our vows and begin the greatest adventure of our lives together.",
+    color: "#C4607A",
   },
 ];
 
 export default function OurStory() {
   return (
-    <section id="story" className="py-28 bg-ivory overflow-hidden relative">
-      {/* Side florals — grow as you scroll */}
-      <div className="absolute left-0 top-8 hidden lg:block">
-        <FloralAccent opacity={0.58} size={1.25} />
-      </div>
-      <div className="absolute right-0 top-8 hidden lg:block">
-        <FloralAccent mirror opacity={0.58} size={1.25} />
-      </div>
-      {/* Mid-section accent */}
-      <div className="absolute left-0 bottom-0 hidden xl:block">
-        <FloralAccent opacity={0.35} size={0.75} />
-      </div>
-      <div className="absolute right-0 bottom-0 hidden xl:block">
-        <FloralAccent mirror opacity={0.35} size={0.75} />
+    <section id="story" className="relative overflow-hidden py-20 sm:py-28"
+      style={{ background: "#0E0B08" }}>
+
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute top-0 right-0" style={{ width: 300, height: 300,
+          background: "radial-gradient(circle, rgba(196,96,122,0.07) 0%, transparent 70%)" }} />
       </div>
 
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 relative z-10">
+
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-center mb-24"
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 1.1 }}
+          className="text-center mb-14 sm:mb-20"
         >
-          <p className="font-body text-[11px] tracking-[0.45em] uppercase text-stone mb-4">
-            Our Journey Together
+          <p className="font-body tracking-[0.55em] uppercase mb-3"
+            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(196,96,122,0.55)" }}>
+            Our Love Story
           </p>
-          <h2 className="font-display text-6xl md:text-8xl text-burgundy mb-5">Our Story</h2>
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
+          <h2 className="font-display select-none"
+            style={{ fontSize: "clamp(2.8rem, 10vw, 6.5rem)", color: "#FFFFFF" }}>
+            Our Story
+          </h2>
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="h-px w-14"
+              style={{ background: "linear-gradient(to right, transparent, rgba(196,96,122,0.3))" }} />
+            <div className="w-1.5 h-1.5 rotate-45" style={{ background: "rgba(196,96,122,0.5)" }} />
+            <div className="h-px w-14"
+              style={{ background: "linear-gradient(to left, transparent, rgba(196,96,122,0.3))" }} />
           </div>
         </motion.div>
 
-        <div className="relative">
-          <motion.div
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-px origin-top hidden md:block"
-            style={{ background: "linear-gradient(to bottom, transparent, rgba(201,168,76,0.5), transparent)" }}
-          />
-
-          <div className="space-y-16">
-            {events.map((ev, i) => (
-              <motion.div
-                key={ev.title}
-                initial={{ opacity: 0, x: ev.side === "left" ? -120 : 120 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.9, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative md:flex md:items-center md:gap-0 ${
-                  ev.side === "right" ? "md:flex-row-reverse" : ""
-                }`}
+        <div className="space-y-8 sm:space-y-10">
+          {STORY.map((entry, i) => (
+            <motion.div key={entry.label}
+              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 1, delay: i * 0.1 }}
+              className="flex items-start gap-5 sm:gap-7"
+            >
+              <div className="flex-shrink-0 mt-1">
+                <Rose delay={i * 0.15} size={52} color={entry.color} />
+              </div>
+              <div className="flex-1 p-5 sm:p-6"
+                style={{
+                  background: "rgba(255,255,255,0.022)",
+                  border: "1px solid rgba(196,96,122,0.12)",
+                  borderRadius: "14px",
+                }}
               >
-                <div className="md:flex-1 md:px-10">
-                  <motion.div
-                    whileHover={{ y: -7, boxShadow: "0 24px 60px rgba(125,30,70,0.13)" }}
-                    transition={{ duration: 0.28, ease: "easeOut" }}
-                    className={`relative bg-white/80 backdrop-blur-sm p-8 shadow-sm border border-blush/25 cursor-default overflow-hidden ${
-                      ev.side === "left" ? "md:text-right" : "md:text-left"
-                    }`}
-                  >
-                    <div className="relative">
-                      <h3 className="font-heading text-2xl md:text-3xl text-charcoal mb-3">{ev.title}</h3>
-                      <div className={`h-px w-8 bg-gold/45 mb-4 ${ev.side === "left" ? "md:ml-auto" : ""}`} />
-                      <p className="font-body text-sm text-stone/75 leading-relaxed font-light">
-                        {ev.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-
-                <div className="hidden md:flex flex-shrink-0 relative z-10 items-center justify-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.08 + 0.35, type: "spring", bounce: 0.5 }}
-                    className="w-3.5 h-3.5 rounded-full bg-gold border-2 border-gold ring-4 ring-gold/20"
-                  />
-                </div>
-
-                <div className="hidden md:block md:flex-1" />
-              </motion.div>
-            ))}
-          </div>
+                <p className="font-body tracking-[0.3em] uppercase mb-2"
+                  style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(196,96,122,0.65)" }}>
+                  {entry.label}
+                </p>
+                <p className="font-heading"
+                  style={{ fontSize: "clamp(1rem, 3vw, 1.2rem)", color: "rgba(245,237,232,0.75)", lineHeight: 1.7 }}>
+                  {entry.text}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
