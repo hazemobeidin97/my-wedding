@@ -93,7 +93,7 @@ export default function Hero() {
           transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="font-display select-none"
           style={{
-            fontSize: "clamp(3rem, 10vw, 7.5rem)",
+            fontSize: "clamp(4rem, 14vw, 11rem)",
             color: "#FFFFFF",
             lineHeight: 1.1,
             textShadow: "0 2px 20px rgba(0,0,0,0.55)",
