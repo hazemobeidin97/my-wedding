@@ -22,9 +22,22 @@
   --font-names:    var(--font-playfair);
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
 
-/* Override browser autofill white background on dark inputs */
+/* iOS Safari: strip native white form-element backgrounds */
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #1A1410;
+  color: #F5EDE8;
+}
+
+/* Autofill — Chrome/desktop */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -34,7 +47,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #0E0B08 inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #1A1410 inset !important;
   -webkit-text-fill-color: #F5EDE8 !important;
   caret-color: #F5EDE8;
 }

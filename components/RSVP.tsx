@@ -78,7 +78,7 @@ export default function RSVP() {
 
   const fieldStyle = (f: string): React.CSSProperties => ({
     width: "100%",
-    background: "rgba(255,255,255,0.05)",
+    background: "#1A1410",
     border: errors[f as keyof Form]
       ? "1px solid rgba(220,60,60,0.6)"
       : focused === f
@@ -206,7 +206,7 @@ export default function RSVP() {
                     <select value={form.guests}
                       onFocus={() => setFocused("guests")} onBlur={() => setFocused(null)}
                       onChange={e => set("guests", e.target.value)}
-                      style={{ ...fieldStyle("guests"), background: "#0E0B08", cursor: "pointer" }}>
+                      style={{ ...fieldStyle("guests"), cursor: "pointer" }}>
                       {[1, 2, 3, 4, 5].map(n => (
                         <option key={n} value={n} style={{ background: "#0E0B08" }}>
                           {n} Guest{n > 1 ? "s" : ""}
