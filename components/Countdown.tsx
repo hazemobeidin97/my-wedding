@@ -1,134 +1,87 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import FloralAccent from "./FloralAccent";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
-const WEDDING = new Date("2026-08-25T18:00:00");
-
-function getTimeLeft() {
-  const diff = WEDDING.getTime() - Date.now();
-  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+const WEDDING = new Date("2026-08-25T17:00:00");
+function pad(n: number) { return String(n).padStart(2, "0"); }
+function diff() {
+  const ms = Math.max(0, WEDDING.getTime() - Date.now());
   return {
-    days:    Math.floor(diff / 86_400_000),
-    hours:   Math.floor((diff % 86_400_000) / 3_600_000),
-    minutes: Math.floor((diff % 3_600_000) / 60_000),
-    seconds: Math.floor((diff % 60_000) / 1000),
+    d: Math.floor(ms / 86400000),
+    h: Math.floor((ms % 86400000) / 3600000),
+    m: Math.floor((ms % 3600000) / 60000),
+    s: Math.floor((ms % 60000) / 1000),
   };
 }
 
-function Unit({ value, label, index }: { value: number; label: string; index: number }) {
-  const display = String(value).padStart(2, "0");
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: index * 0.1 }}
-      className="flex flex-col items-center gap-2 min-w-[3.2rem] sm:min-w-[4.5rem]"
-    >
-      <p className="font-body text-[8px] tracking-[0.3em] uppercase text-gold/45">
-        {label}
-      </p>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={display}
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 6 }}
-          transition={{ duration: 0.25 }}
-          className="font-heading tabular-nums"
-          style={{
-            fontSize: "clamp(2rem, 6.5vw, 4.2rem)",
-            color: "#F5EDE0",
-            lineHeight: 1.1,
-            display: "block",
-          }}
-        >
-          {display}
-        </motion.span>
-      </AnimatePresence>
-      <div className="h-px w-10 sm:w-14" style={{ background: "linear-gradient(to right, transparent, rgba(201,168,76,0.5), transparent)" }} />
-    </motion.div>
-  );
-}
-
 export default function Countdown() {
-  const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
+  const [time, setTime] = useState(diff);
   useEffect(() => {
-    setTime(getTimeLeft());
-    const id = setInterval(() => setTime(getTimeLeft()), 1000);
+    const id = setInterval(() => setTime(diff()), 1000);
     return () => clearInterval(id);
   }, []);
 
   const units = [
-    { value: time.days,    label: "Days" },
-    { value: time.hours,   label: "Hours" },
-    { value: time.minutes, label: "Min" },
-    { value: time.seconds, label: "Sec" },
+    { label: "Days",    val: time.d },
+    { label: "Hours",   val: time.h },
+    { label: "Minutes", val: time.m },
+    { label: "Seconds", val: time.s },
   ];
 
   return (
-    <section className="py-24 bg-charcoal relative overflow-hidden">
-      <div className="absolute left-0 bottom-0 hidden lg:block">
-        <FloralAccent opacity={0.38} />
-      </div>
-      <div className="absolute right-0 bottom-0 hidden lg:block">
-        <FloralAccent mirror opacity={0.38} />
+    <section style={{ background: "#140F0B" }} className="py-16 sm:py-20 relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.22), transparent)" }} />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ width: 500, height: 200,
+            background: "radial-gradient(ellipse, rgba(201,169,110,0.05) 0%, transparent 70%)" }} />
       </div>
 
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{ opacity: [0.4, 0.85, 0.4] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        style={{ background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(125,30,70,0.16) 0%, transparent 100%)" }}
-      />
-
-      <div className="max-w-2xl mx-auto px-6 text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center relative z-10">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9 }}
-          className="mb-12"
+          className="font-heading italic mb-9"
+          style={{ fontSize: "clamp(0.95rem, 3vw, 1.1rem)", color: "rgba(245,237,232,0.3)" }}
         >
-          <p className="font-body text-[10px] tracking-[0.5em] uppercase text-gold/40 mb-3">
-            Counting Down To Forever
-          </p>
-          <h2 className="font-display text-ivory/80" style={{ fontSize: "clamp(2.2rem, 7vw, 4rem)" }}>
-            Our Big Day
-          </h2>
-        </motion.div>
+          Counting down to our forever
+        </motion.p>
 
-        {/* Counter row */}
-        <div className="flex items-end justify-center gap-3 sm:gap-6">
-          {units.map((u, i) => (
-            <Fragment key={u.label}>
-              <Unit value={u.value} label={u.label} index={i} />
-              {i < units.length - 1 && (
-                <span
-                  className="font-heading text-gold/25 mb-8 shrink-0"
-                  style={{ fontSize: "clamp(1.2rem, 4vw, 2.2rem)" }}
-                >
-                  :
+        <div className="flex items-start justify-center gap-4 sm:gap-10">
+          {units.map(({ label, val }, i) => (
+            <motion.div key={label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="flex flex-col items-center"
+            >
+              <div className="relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rotate-45"
+                  style={{ background: "rgba(201,169,110,0.45)" }} />
+                <span className="font-heading tabular-nums block"
+                  style={{ fontSize: "clamp(2.5rem, 9vw, 5rem)", color: "#FFFFFF",
+                    lineHeight: 1.1, letterSpacing: "-0.02em" }}>
+                  {pad(val)}
                 </span>
-              )}
-            </Fragment>
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rotate-45"
+                  style={{ background: "rgba(201,169,110,0.45)" }} />
+              </div>
+              <span className="font-body tracking-[0.3em] uppercase mt-5"
+                style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(245,237,232,0.3)" }}>
+                {label}
+              </span>
+            </motion.div>
           ))}
         </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.6 }}
-          className="mt-12 font-heading italic text-ivory/28"
-          style={{ fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)" }}
-        >
-          &ldquo;The best is yet to come.&rdquo;
-        </motion.p>
       </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.22), transparent)" }} />
     </section>
   );
 }

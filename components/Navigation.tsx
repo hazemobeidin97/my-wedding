@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { label: "Our Story", href: "#story" },
-  { label: "Details", href: "#details" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "RSVP", href: "#rsvp" },
+  { label: "Our Story", href: "#story"    },
+  { label: "The Day",   href: "#timeline" },
+  { label: "Venue",     href: "#venue"    },
+  { label: "Gallery",   href: "#gallery"  },
+  { label: "RSVP",      href: "#rsvp"     },
 ];
 
 export default function Navigation() {
@@ -25,45 +26,65 @@ export default function Navigation() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.9, delay: 2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-ivory/95 backdrop-blur-md shadow-sm" : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      style={{
+        background: scrolled ? "rgba(14,11,8,0.96)" : "transparent",
+        backdropFilter: scrolled ? "blur(14px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(201,169,110,0.12)" : "none",
+      }}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a
-          href="#"
-          className={`font-display text-2xl leading-none transition-colors duration-500 ${
-            scrolled ? "text-burgundy" : "text-gold"
-          }`}
-        >
-          H & L
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
+
+        <a href="#home" className="font-display text-2xl sm:text-3xl leading-none select-none"
+          style={{ color: "rgba(201,169,110,0.8)" }}>
+          L &amp; H
         </a>
 
-        <div className="hidden md:flex items-center gap-10">
-          {links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className={`font-body text-[11px] tracking-[0.22em] uppercase transition-colors duration-300 ${
-                scrolled
-                  ? "text-stone hover:text-burgundy"
-                  : "text-ivory/60 hover:text-ivory"
-              }`}
+        <div className="hidden md:flex items-center gap-8">
+          {links.map(l => (
+            <a key={l.label} href={l.href}
+              className="font-body text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
+              style={{ color: "rgba(245,237,232,0.5)" }}
+              onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(201,169,110,0.85)")}
+              onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(245,237,232,0.5)")}
             >
               {l.label}
             </a>
           ))}
+
+          <a href="#rsvp"
+            className="font-body text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300"
+            style={{
+              border: "1px solid rgba(201,169,110,0.35)",
+              color: "rgba(245,237,232,0.75)",
+              background: "rgba(155,58,53,0.08)",
+              borderRadius: "6px",
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "#9B3A35"; el.style.color = "#FFFFFF"; el.style.borderColor = "#9B3A35";
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "rgba(155,58,53,0.08)";
+              el.style.color = "rgba(245,237,232,0.75)";
+              el.style.borderColor = "rgba(201,169,110,0.35)";
+            }}
+          >
+            RSVP
+          </a>
         </div>
 
         <button
-          className={`md:hidden p-1 transition-colors duration-500 ${scrolled ? "text-burgundy" : "text-ivory/70"}`}
+          className="md:hidden flex items-center justify-center w-11 h-11 -mr-2"
+          style={{ color: "rgba(245,237,232,0.7)" }}
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
-          <div className="space-y-[5px] w-6">
-            <span className={`block h-px bg-current transition-all duration-300 ${open ? "rotate-45 translate-y-1.5" : ""}`} />
+          <div className="space-y-[6px] w-5">
+            <span className={`block h-px bg-current transition-all duration-300 ${open ? "rotate-45 translate-y-[7px]" : ""}`} />
             <span className={`block h-px bg-current transition-opacity duration-300 ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-px bg-current transition-all duration-300 ${open ? "-rotate-45 -translate-y-1.5" : ""}`} />
+            <span className={`block h-px bg-current transition-all duration-300 ${open ? "-rotate-45 -translate-y-[7px]" : ""}`} />
           </div>
         </button>
       </div>
@@ -75,15 +96,16 @@ export default function Navigation() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-ivory/96 backdrop-blur-md border-t border-blush/40"
+            style={{ background: "rgba(14,11,8,0.98)", borderTop: "1px solid rgba(201,169,110,0.1)" }}
           >
-            <div className="px-8 py-6 flex flex-col gap-5">
-              {links.map((l) => (
-                <a
-                  key={l.label}
-                  href={l.href}
+            <div className="px-6 py-4 flex flex-col">
+              {links.map(l => (
+                <a key={l.label} href={l.href}
                   onClick={() => setOpen(false)}
-                  className="font-body text-[11px] tracking-[0.22em] uppercase text-stone hover:text-burgundy transition-colors"
+                  className="font-body text-[11px] tracking-[0.28em] uppercase py-4 transition-colors duration-300"
+                  style={{ color: "rgba(245,237,232,0.45)", borderBottom: "1px solid rgba(201,169,110,0.08)" }}
+                  onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(201,169,110,0.8)")}
+                  onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(245,237,232,0.45)")}
                 >
                   {l.label}
                 </a>
