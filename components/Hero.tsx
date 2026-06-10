@@ -88,16 +88,6 @@ export default function Hero() {
       {/* Content — lower third */}
       <div className="absolute inset-x-0 bottom-0 pb-16 sm:pb-24 px-6 text-center z-10">
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="font-body tracking-[0.5em] uppercase mb-4"
-          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
-        >
-          We&rsquo;re Getting Married
-        </motion.p>
-
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,11 +108,21 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.15 }}
-          className="font-body tracking-[0.3em] uppercase mt-3"
+          transition={{ duration: 1, delay: 1.05 }}
+          className="font-body tracking-[0.5em] uppercase mt-3"
           style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
-          August 25, 2026 &nbsp;&middot;&nbsp; Dortmund, Germany
+          We&rsquo;re Getting Married
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="font-body tracking-[0.3em] uppercase mt-2"
+          style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
+        >
+          August 25, 2026
         </motion.p>
       </div>
 
