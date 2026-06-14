@@ -2,18 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const links = [
-  { label: "Our Story", href: "#story"    },
-  { label: "The Day",   href: "#timeline" },
-  { label: "Venue",     href: "#venue"    },
-  { label: "Gallery",   href: "#gallery"  },
-  { label: "RSVP",      href: "#rsvp"     },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function Navigation() {
+  const { t, locale, toggleLocale } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const links = t.nav.links;
+  const otherLanguageLabel = locale === "en" ? "العربية" : "English";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -52,6 +48,29 @@ export default function Navigation() {
             </a>
           ))}
 
+          <button
+            onClick={toggleLocale}
+            aria-label={t.nav.switchLanguage}
+            className="font-body text-[11px] uppercase transition-all duration-300 px-3 py-1.5"
+            style={{
+              border: "1px solid rgba(201,169,110,0.3)",
+              color: "rgba(245,237,232,0.55)",
+              borderRadius: "6px",
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "rgba(201,169,110,0.7)";
+              el.style.color = "rgba(201,169,110,0.9)";
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "rgba(201,169,110,0.3)";
+              el.style.color = "rgba(245,237,232,0.55)";
+            }}
+          >
+            {otherLanguageLabel}
+          </button>
+
           <a href="#rsvp"
             className="font-body text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300"
             style={{
@@ -71,15 +90,15 @@ export default function Navigation() {
               el.style.borderColor = "rgba(201,169,110,0.35)";
             }}
           >
-            RSVP
+            {t.nav.rsvp}
           </a>
         </div>
 
         <button
-          className="md:hidden flex items-center justify-center w-11 h-11 -mr-2"
+          className="md:hidden flex items-center justify-center w-11 h-11 -mr-2 rtl:-ml-2 rtl:mr-0"
           style={{ color: "rgba(245,237,232,0.7)" }}
           onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
+          aria-label={t.nav.toggleMenu}
         >
           <div className="space-y-[6px] w-5">
             <span className={`block h-px bg-current transition-all duration-300 ${open ? "rotate-45 translate-y-[7px]" : ""}`} />
@@ -110,6 +129,13 @@ export default function Navigation() {
                   {l.label}
                 </a>
               ))}
+              <button
+                onClick={() => { toggleLocale(); setOpen(false); }}
+                className="font-body text-[11px] uppercase py-4 text-center transition-colors duration-300"
+                style={{ color: "rgba(201,169,110,0.7)" }}
+              >
+                {otherLanguageLabel}
+              </button>
             </div>
           </motion.div>
         )}

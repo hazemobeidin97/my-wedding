@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const BLOOMS = [
   { left: "10%", r: 22, color: "rgba(215,90,112,0.72)",  center: "rgba(250,215,225,0.9)", delay: 0.10 },
@@ -63,9 +64,8 @@ function FlowerGarden() {
   );
 }
 
-const links = ["Our Story", "The Day", "Venue", "Gallery", "RSVP"];
-
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer style={{ background: "#0B0805" }} className="relative overflow-hidden pt-20 pb-8">
 
@@ -103,7 +103,7 @@ export default function Footer() {
           className="font-heading italic mb-5"
           style={{ fontSize: "clamp(1rem, 3vw, 1.2rem)", color: "rgba(245,237,232,0.4)" }}
         >
-          August 25, 2026 &middot; Dortmund, Germany
+          {t.footer.dateLocation}
         </motion.p>
 
         <motion.p
@@ -112,19 +112,19 @@ export default function Footer() {
           className="font-body mb-10"
           style={{ fontSize: "clamp(12px, 2.5vw, 14px)", color: "rgba(245,237,232,0.25)", lineHeight: 1.85 }}
         >
-          Thank you for being part of our love story.<br />
-          We are so grateful to celebrate with those we love most.
+          {t.footer.thanks[0]}<br />
+          {t.footer.thanks[1]}
         </motion.p>
 
         <div className="flex items-center justify-center flex-wrap gap-5 mb-2">
-          {links.map(l => (
-            <a key={l} href={`#${l.toLowerCase().replace(" ", "")}`}
+          {t.nav.links.map(link => (
+            <a key={link.href} href={link.href}
               className="font-body tracking-[0.2em] uppercase transition-colors duration-300"
               style={{ fontSize: "clamp(9px, 1.5vw, 10px)", color: "rgba(245,237,232,0.22)" }}
               onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(196,96,122,0.65)")}
               onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(245,237,232,0.22)")}
             >
-              {l}
+              {link.label}
             </a>
           ))}
         </div>
@@ -135,7 +135,7 @@ export default function Footer() {
       <div className="text-center mt-4 relative z-10">
         <p className="font-body"
           style={{ fontSize: "10px", color: "rgba(245,237,232,0.14)", letterSpacing: "0.18em" }}>
-          08.25.2026
+          {t.footer.bottomDate}
         </p>
       </div>
     </footer>

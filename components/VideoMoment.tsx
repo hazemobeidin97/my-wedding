@@ -2,10 +2,12 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 type Phase = "off" | "starting" | "on";
 
 export default function VideoMoment() {
+  const { t } = useLanguage();
   const [phase, setPhase] = useState<Phase>("off");
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -52,11 +54,11 @@ export default function VideoMoment() {
         >
           <p className="font-body tracking-[0.5em] uppercase mb-4"
             style={{ fontSize: "clamp(7px, 2vw, 11px)", color: "rgba(201,169,110,0.5)" }}>
-            Relive The Night
+            {t.video.eyebrow}
           </p>
           <h2 className="font-display select-none"
             style={{ fontSize: "clamp(3rem, 11vw, 7rem)", color: "#FFFFFF" }}>
-            Our Moment
+            {t.video.heading}
           </h2>
           <div className="flex items-center justify-center gap-4 mt-5">
             <div className="h-px w-14"
@@ -71,7 +73,7 @@ export default function VideoMoment() {
                 transition={{ duration: 0.4 }}
                 className="font-heading italic mt-5 text-base"
                 style={{ color: "rgba(245,237,232,0.28)" }}>
-                Click the TV to play
+                {t.video.playHint}
               </motion.p>
             )}
           </AnimatePresence>
@@ -235,7 +237,7 @@ export default function VideoMoment() {
           className="font-heading italic mt-10 sm:mt-12"
           style={{ fontSize: "clamp(0.9rem, 3vw, 1.1rem)", color: "rgba(245,237,232,0.22)" }}
         >
-          &ldquo;Every love story is beautiful — but ours is my favourite.&rdquo;
+          {t.video.quote}
         </motion.p>
       </div>
     </section>

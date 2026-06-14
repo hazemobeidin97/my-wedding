@@ -22,6 +22,22 @@
   --font-names:    var(--font-playfair);
 }
 
+[dir="rtl"] {
+  --font-display: var(--font-aref-ruqaa);
+  --font-heading: var(--font-amiri);
+  --font-names:   var(--font-aref-ruqaa);
+  --font-body:    var(--font-tajawal);
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-tajawal), sans-serif;
+}
+
+/* Wide tracking breaks Arabic glyph connections */
+[dir="rtl"] [class*="tracking-"] {
+  letter-spacing: normal;
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;

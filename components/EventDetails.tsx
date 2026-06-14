@@ -2,15 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-
-const EVENTS = [
-  { time: "17:00", title: "Guest Arrival",        desc: "Welcome to our celebration — find your seat and soak in the atmosphere." },
-  { time: "17:30", title: "Welcome Drinks",        desc: "Champagne, cocktails & light refreshments in the garden."               },
-  { time: "18:00", title: "Wedding Ceremony",      desc: "The sacred moment — our vows, our rings, our forever."                  },
-  { time: "20:00", title: "Wedding Dinner",        desc: "A feast prepared with love, shared with the people we cherish most."    },
-  { time: "22:00", title: "Celebration & Dancing", desc: "Music fills the room — dance with us all night long."                   },
-  { time: "00:00", title: "Special Moments",       desc: "A night written in stars, a memory carried forever."                    },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function r4(n: number) { return parseFloat(n.toFixed(4)); }
 
@@ -51,6 +43,7 @@ function BloomDot({ delay, index }: { delay: number; index: number }) {
 }
 
 export default function EventDetails() {
+  const { t } = useLanguage();
   return (
     <section id="timeline" className="py-20 sm:py-32 relative overflow-hidden"
       style={{ background: "#140F0B" }}>
@@ -77,11 +70,11 @@ export default function EventDetails() {
         >
           <p className="font-body tracking-[0.55em] uppercase mb-3"
             style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(201,169,110,0.55)" }}>
-            August 25, 2026
+            {t.timeline.eyebrow}
           </p>
           <h2 className="font-display select-none"
             style={{ fontSize: "clamp(3rem, 11vw, 7.5rem)", color: "#FFFFFF" }}>
-            The Day
+            {t.timeline.heading}
           </h2>
           <div className="flex items-center justify-center gap-4 mt-5">
             <div className="h-px w-14"
@@ -103,12 +96,12 @@ export default function EventDetails() {
           <motion.div
             initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }}
             transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-6 sm:left-8 top-0 bottom-0 w-px origin-top md:hidden"
+            className="absolute left-6 sm:left-8 rtl:left-auto rtl:right-6 rtl:sm:right-8 top-0 bottom-0 w-px origin-top md:hidden"
             style={{ background: "linear-gradient(to bottom, rgba(196,112,122,0.5), rgba(201,169,110,0.3))" }}
           />
 
           <div className="space-y-0">
-            {EVENTS.map((ev, i) => {
+            {t.timeline.events.map((ev, i) => {
               const isRight = i % 2 === 0;
               return (
                 <motion.div key={ev.title}
@@ -116,7 +109,7 @@ export default function EventDetails() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 1, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className={`relative flex items-center pb-10 sm:pb-12 pl-16 sm:pl-20 md:pl-0 ${
+                  className={`relative flex items-center pb-10 sm:pb-12 pl-16 sm:pl-20 md:pl-0 rtl:pl-0 rtl:pr-16 rtl:sm:pr-20 rtl:md:pr-0 ${
                     isRight ? "md:flex-row" : "md:flex-row-reverse"
                   }`}
                 >
@@ -128,13 +121,13 @@ export default function EventDetails() {
                   </div>
 
                   {/* Mobile dot */}
-                  <div className="absolute left-6 sm:left-8 -translate-x-1/2 top-0 md:hidden z-10">
+                  <div className="absolute left-6 sm:left-8 -translate-x-1/2 rtl:left-auto rtl:right-6 rtl:sm:right-8 rtl:translate-x-1/2 top-0 md:hidden z-10">
                     <BloomDot delay={i * 0.12} index={i} />
                   </div>
 
                   {/* Card */}
                   <div
-                    className={`w-full md:w-[calc(50%-2.5rem)] p-5 sm:p-8 ${isRight ? "md:ml-10" : "md:mr-10"}`}
+                    className={`w-full md:w-[calc(50%-2.5rem)] p-5 sm:p-8 ${isRight ? "md:ml-10 rtl:md:ml-0 rtl:md:mr-10" : "md:mr-10 rtl:md:mr-0 rtl:md:ml-10"}`}
                     style={{
                       background: "rgba(255,255,255,0.026)",
                       border: "1px solid rgba(196,112,122,0.12)",
@@ -163,19 +156,6 @@ export default function EventDetails() {
             })}
           </div>
         </div>
-
-        {/* Dress code */}
-        <motion.div
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="text-center mt-8 sm:mt-12"
-        >
-          <p className="font-body tracking-[0.35em] uppercase"
-            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(245,237,232,0.22)" }}>
-            Dress Code —{" "}
-            <span style={{ color: "rgba(201,169,110,0.55)" }}>Black Tie Optional</span>
-          </p>
-        </motion.div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-px"

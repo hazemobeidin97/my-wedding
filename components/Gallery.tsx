@@ -3,22 +3,25 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 // wedding.jpg removed (white dress photo)
-const SLIDES = [
-  { id: 0, src: "/photos/couple.jpg",   label: "Together",    caption: "Where it all began",     objectPos: "center top" },
-  { id: 1, src: "/photos/proposal.jpg", label: "She Said Yes", caption: "The happiest moment",   objectPos: "center 22%" },
-  { id: 2, src: "/photos/rings.jpg",    label: "Bound",       caption: "A promise made in gold", objectPos: "center 45%" },
+const SLIDE_ASSETS = [
+  { src: "/photos/couple.jpg",   objectPos: "center top" },
+  { src: "/photos/proposal.jpg", objectPos: "center 22%" },
+  { src: "/photos/rings.jpg",    objectPos: "center 45%" },
 ];
 
 const INTERVAL = 5500;
 
 export default function Gallery() {
+  const { t, dir } = useLanguage();
+  const SLIDES = SLIDE_ASSETS.map((a, i) => ({ id: i, ...a, ...t.gallery.slides[i] }));
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  const next = useCallback(() => setCurrent(c => (c + 1) % SLIDES.length), []);
-  const prev = () => setCurrent(c => (c - 1 + SLIDES.length) % SLIDES.length);
+  const next = useCallback(() => setCurrent(c => (c + 1) % SLIDE_ASSETS.length), []);
+  const prev = () => setCurrent(c => (c - 1 + SLIDE_ASSETS.length) % SLIDE_ASSETS.length);
 
   useEffect(() => {
     if (paused) return;
@@ -41,11 +44,11 @@ export default function Gallery() {
           style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.2), transparent)" }} />
         <p className="font-body text-[10px] tracking-[0.55em] uppercase mb-4"
           style={{ color: "rgba(201,169,110,0.52)" }}>
-          Moments We Cherish
+          {t.gallery.eyebrow}
         </p>
         <h2 className="font-display select-none"
           style={{ fontSize: "clamp(3rem, 11vw, 7.5rem)", color: "#FFFFFF" }}>
-          Our Gallery
+          {t.gallery.heading}
         </h2>
         <div className="flex items-center justify-center gap-4 mt-6">
           <div className="h-px w-14"
@@ -113,12 +116,16 @@ export default function Gallery() {
 
         {/* Prev / Next */}
         {[
-          { dir: "prev", pos: "left-5 md:left-8",   action: prev, path: "M10 3L4 8L10 13" },
-          { dir: "next", pos: "right-5 md:right-8",  action: next, path: "M4 3L10 8L4 13"  },
+          { key: "prev", action: prev, label: t.gallery.prev,
+            posLtr: "left-5 md:left-8", posRtl: "right-5 md:right-8",
+            pathLtr: "M10 3L4 8L10 13", pathRtl: "M4 3L10 8L4 13" },
+          { key: "next", action: next, label: t.gallery.next,
+            posLtr: "right-5 md:right-8", posRtl: "left-5 md:left-8",
+            pathLtr: "M4 3L10 8L4 13", pathRtl: "M10 3L4 8L10 13" },
         ].map(btn => (
-          <motion.button key={btn.dir} onClick={btn.action}
+          <motion.button key={btn.key} onClick={btn.action}
             whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}
-            className={`absolute ${btn.pos} top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center z-10`}
+            className={`absolute ${dir === "rtl" ? btn.posRtl : btn.posLtr} top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center z-10`}
             style={{
               border: "1px solid rgba(245,237,232,0.12)",
               color: "rgba(245,237,232,0.45)",
@@ -134,16 +141,16 @@ export default function Gallery() {
               el.style.borderColor = "rgba(245,237,232,0.12)";
               el.style.color = "rgba(245,237,232,0.45)";
             }}
-            aria-label={btn.dir}
+            aria-label={btn.label}
           >
             <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
-              <path d={btn.path} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d={dir === "rtl" ? btn.pathRtl : btn.pathLtr} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </motion.button>
         ))}
 
         {/* Counter */}
-        <div className="absolute top-6 right-6 md:right-10 font-body text-[10px] tracking-[0.25em] select-none"
+        <div dir="ltr" className="absolute top-6 right-6 md:right-10 rtl:right-auto rtl:left-6 rtl:md:left-10 font-body text-[10px] tracking-[0.25em] select-none"
           style={{ color: "rgba(245,237,232,0.28)" }}>
           {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
         </div>
@@ -151,7 +158,7 @@ export default function Gallery() {
         {/* Dots */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-3">
           {SLIDES.map((_, i) => (
-            <button key={i} onClick={() => setCurrent(i)} aria-label={`Slide ${i + 1}`} className="p-2 -m-2">
+            <button key={i} onClick={() => setCurrent(i)} aria-label={`${t.gallery.slideLabel} ${i + 1}`} className="p-2 -m-2">
               <motion.div
                 animate={{ width: i === current ? 28 : 6, background: i === current ? "#C4707A" : "rgba(245,237,232,0.22)" }}
                 transition={{ duration: 0.35 }}

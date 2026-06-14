@@ -3,16 +3,25 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const EMAILJS_SERVICE  = "service_e02x3bi";
 const EMAILJS_TEMPLATE = "template_1omsa6t";
 const EMAILJS_KEY      = "xTaRlTtvUjJSW8WFL";
 const TO_EMAIL         = "Hazem.obeidin@outlook.com";
 
+// EmailJS payload always uses fixed English labels, regardless of UI language
+const ATTENDING_EMAIL_LABEL: Record<"accept" | "decline", string> = {
+  accept: "Joyfully Accepts",
+  decline: "Regretfully Declines",
+};
+
 type Form = {
   name: string; email: string; phone: string;
-  attending: string; guests: string; message: string;
+  attending: "" | "accept" | "decline"; guests: string; message: string;
 };
+
+type FormErrors = Partial<Record<keyof Form, string>>;
 
 const BLOOM = Array.from({ length: 55 }, (_, i) => {
   const angle = (i / 55) * Math.PI * 2;
@@ -31,23 +40,24 @@ const BLOOM = Array.from({ length: 55 }, (_, i) => {
 });
 
 export default function RSVP() {
+  const { t } = useLanguage();
   useEffect(() => { emailjs.init({ publicKey: EMAILJS_KEY }); }, []);
 
   const [form, setForm]           = useState<Form>({ name: "", email: "", phone: "", attending: "", guests: "1", message: "" });
-  const [errors, setErrors]       = useState<Partial<Form>>({});
+  const [errors, setErrors]       = useState<FormErrors>({});
   const [focused, setFocused]     = useState<string | null>(null);
   const [loading, setLoading]     = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [sendError, setSendError] = useState(false);
 
-  const set = (field: keyof Form, val: string) => setForm(f => ({ ...f, [field]: val }));
+  const set = (field: keyof Form, val: string) => setForm(f => ({ ...f, [field]: val } as Form));
 
   const validate = () => {
-    const e: Partial<Form> = {};
-    if (!form.name.trim())  e.name      = "Name is required";
-    if (!form.email.trim()) e.email     = "Email is required";
-    if (!form.phone.trim()) e.phone     = "Phone is required";
-    if (!form.attending)    e.attending = "Please select attendance";
+    const e: FormErrors = {};
+    if (!form.name.trim())  e.name      = t.rsvp.errors.name;
+    if (!form.email.trim()) e.email     = t.rsvp.errors.email;
+    if (!form.phone.trim()) e.phone     = t.rsvp.errors.phone;
+    if (!form.attending)    e.attending = t.rsvp.errors.attending;
     return e;
   };
 
@@ -63,8 +73,8 @@ export default function RSVP() {
         guest_name:    form.name,
         guest_email:   form.email,
         guest_phone:   form.phone,
-        attending:     form.attending,
-        guest_count:   form.attending === "Joyfully Accepts" ? form.guests : "—",
+        attending:     ATTENDING_EMAIL_LABEL[form.attending as "accept" | "decline"],
+        guest_count:   form.attending === "accept" ? form.guests : "—",
         guest_message: form.message || "—",
       });
       setSubmitted(true);
@@ -86,7 +96,7 @@ export default function RSVP() {
         : "1px solid rgba(245,237,232,0.1)",
     borderRadius: "10px",
     padding: "13px 16px",
-    fontFamily: "var(--font-raleway)",
+    fontFamily: "var(--font-body)",
     fontSize: "14px",
     color: "#F5EDE8",
     outline: "none",
@@ -121,11 +131,11 @@ export default function RSVP() {
         >
           <p className="font-body tracking-[0.55em] uppercase mb-4"
             style={{ fontSize: "clamp(7px, 2vw, 10px)", color: "rgba(201,169,110,0.52)" }}>
-            Join Our Celebration
+            {t.rsvp.eyebrow}
           </p>
           <h2 className="font-display select-none"
             style={{ fontSize: "clamp(3rem, 11vw, 7.5rem)", color: "#FFFFFF" }}>
-            RSVP
+            {t.rsvp.heading}
           </h2>
           <div className="flex items-center justify-center gap-4 mt-5 mb-6">
             <div className="h-px w-12"
@@ -136,7 +146,7 @@ export default function RSVP() {
           </div>
           <p className="font-heading italic"
             style={{ fontSize: "clamp(0.9rem, 3vw, 1rem)", color: "rgba(245,237,232,0.3)" }}>
-            Please respond by August 1, 2026
+            {t.rsvp.deadline}
           </p>
         </motion.div>
 
@@ -147,7 +157,7 @@ export default function RSVP() {
               transition={{ duration: 0.5 }} onSubmit={handleSubmit} className="space-y-7" noValidate
             >
               <div>
-                <input type="text" placeholder="Full Name" value={form.name}
+                <input type="text" placeholder={t.rsvp.placeholders.name} value={form.name}
                   onFocus={() => setFocused("name")} onBlur={() => setFocused(null)}
                   onChange={e => set("name", e.target.value)}
                   style={fieldStyle("name")} className="placeholder-white/20" />
@@ -155,7 +165,7 @@ export default function RSVP() {
               </div>
 
               <div>
-                <input type="email" placeholder="Email Address" value={form.email}
+                <input type="email" placeholder={t.rsvp.placeholders.email} value={form.email}
                   onFocus={() => setFocused("email")} onBlur={() => setFocused(null)}
                   onChange={e => set("email", e.target.value)}
                   style={fieldStyle("email")} className="placeholder-white/20" />
@@ -163,7 +173,7 @@ export default function RSVP() {
               </div>
 
               <div>
-                <input type="tel" placeholder="Phone Number" value={form.phone}
+                <input type="tel" placeholder={t.rsvp.placeholders.phone} value={form.phone}
                   onFocus={() => setFocused("phone")} onBlur={() => setFocused(null)}
                   onChange={e => set("phone", e.target.value)}
                   style={fieldStyle("phone")} className="placeholder-white/20" />
@@ -173,11 +183,11 @@ export default function RSVP() {
               <div>
                 <p className="font-body tracking-[0.35em] uppercase mb-4"
                   style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(245,237,232,0.3)" }}>
-                  Will you attend?
+                  {t.rsvp.attendQuestion}
                 </p>
                 {errors.attending && <p className="mb-2 text-xs font-body" style={{ color: "rgba(220,90,90,0.85)" }}>{errors.attending}</p>}
                 <div className="flex flex-col gap-0.5">
-                  {["Joyfully Accepts", "Regretfully Declines"].map(opt => (
+                  {(["accept", "decline"] as const).map(opt => (
                     <label key={opt} className="flex items-center gap-4 cursor-pointer" style={{ minHeight: "48px" }}
                       onClick={() => set("attending", opt)}>
                       <div className="flex-shrink-0 flex items-center justify-center transition-all duration-300"
@@ -192,7 +202,7 @@ export default function RSVP() {
                       </div>
                       <span className="font-body text-sm transition-colors duration-300"
                         style={{ color: form.attending === opt ? "rgba(245,237,232,0.88)" : "rgba(245,237,232,0.35)" }}>
-                        {opt}
+                        {t.rsvp.attendance[opt]}
                       </span>
                     </label>
                   ))}
@@ -200,7 +210,7 @@ export default function RSVP() {
               </div>
 
               <AnimatePresence>
-                {form.attending === "Joyfully Accepts" && (
+                {form.attending === "accept" && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35 }}>
                     <select value={form.guests}
@@ -209,7 +219,7 @@ export default function RSVP() {
                       style={{ ...fieldStyle("guests"), cursor: "pointer" }}>
                       {[1, 2, 3, 4, 5].map(n => (
                         <option key={n} value={n} style={{ background: "#0E0B08" }}>
-                          {n} Guest{n > 1 ? "s" : ""}
+                          {t.rsvp.guestOptions[n - 1]}
                         </option>
                       ))}
                     </select>
@@ -218,7 +228,7 @@ export default function RSVP() {
               </AnimatePresence>
 
               <div>
-                <textarea placeholder="A message for the couple (optional)" rows={3} value={form.message}
+                <textarea placeholder={t.rsvp.placeholders.message} rows={3} value={form.message}
                   onFocus={() => setFocused("message")} onBlur={() => setFocused(null)}
                   onChange={e => set("message", e.target.value)}
                   style={{ ...fieldStyle("message"), resize: "none" }}
@@ -227,7 +237,7 @@ export default function RSVP() {
 
               {sendError && (
                 <p className="text-sm font-body text-center" style={{ color: "rgba(220,90,90,0.85)" }}>
-                  Something went wrong. Please try again.
+                  {t.rsvp.sendError}
                 </p>
               )}
 
@@ -250,9 +260,9 @@ export default function RSVP() {
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                         className="w-4 h-4 rounded-full"
                         style={{ border: "1.5px solid rgba(255,255,255,0.3)", borderTopColor: "#FFFFFF" }} />
-                      <span>Sending…</span>
+                      <span>{t.rsvp.sending}</span>
                     </>
-                  ) : "Send RSVP"}
+                  ) : t.rsvp.submit}
                 </motion.button>
               </div>
             </motion.form>
@@ -300,7 +310,7 @@ export default function RSVP() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="font-display mb-4"
                 style={{ fontSize: "clamp(2.5rem, 10vw, 5.5rem)", color: "#FFFFFF" }}>
-                Thank You
+                {t.rsvp.success.title}
               </motion.h3>
 
               <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
@@ -312,7 +322,7 @@ export default function RSVP() {
                 transition={{ duration: 0.8, delay: 0.7 }}
                 className="font-heading italic"
                 style={{ fontSize: "clamp(0.95rem, 3vw, 1.15rem)", color: "rgba(245,237,232,0.38)" }}>
-                We can&apos;t wait to celebrate with you.
+                {t.rsvp.success.subtitle}
               </motion.p>
             </motion.div>
           )}

@@ -2,10 +2,12 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Wambeler+Hellweg+131+44135+Dortmund+Germany";
 
 export default function Venue() {
+  const { t } = useLanguage();
   return (
     <section
       id="venue"
@@ -53,12 +55,12 @@ export default function Venue() {
         >
           <p className="font-body tracking-[0.55em] uppercase mb-4 text-center"
             style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(201,169,110,0.55)" }}>
-            The Venue
+            {t.venue.eyebrow}
           </p>
 
           <h2 className="font-display select-none text-center mb-2"
             style={{ fontSize: "clamp(2.4rem, 9vw, 5rem)", color: "#FFFFFF" }}>
-            Where It Happens
+            {t.venue.heading}
           </h2>
 
           <div className="flex items-center justify-center gap-4 mb-8">
@@ -73,22 +75,22 @@ export default function Venue() {
             <div>
               <p className="font-heading"
                 style={{ fontSize: "clamp(1.2rem, 3.5vw, 1.55rem)", color: "rgba(245,237,232,0.9)" }}>
-                DIAMANT EVENTHALLE
+                {t.venue.name}
               </p>
             </div>
             <div className="h-px mx-auto" style={{ width: "40px", background: "rgba(196,112,122,0.3)" }} />
             <div className="font-body space-y-1"
               style={{ fontSize: "clamp(12px, 2.5vw, 14px)", color: "rgba(245,237,232,0.5)" }}>
-              <p>Wambeler Hellweg 131</p>
-              <p>44135 Dortmund, Germany</p>
+              <p>{t.venue.addressLine1}</p>
+              <p>{t.venue.addressLine2}</p>
             </div>
             <div className="h-px mx-auto" style={{ width: "40px", background: "rgba(201,169,110,0.25)" }} />
             <div className="font-body space-y-1"
               style={{ fontSize: "clamp(12px, 2.5vw, 14px)", color: "rgba(245,237,232,0.45)" }}>
               <p className="font-medium" style={{ color: "rgba(245,237,232,0.75)" }}>
-                Tuesday, August 25 · 2026
+                {t.venue.date}
               </p>
-              <p>Doors open at 17:00</p>
+              <p>{t.venue.doors}</p>
             </div>
           </div>
 
@@ -115,7 +117,7 @@ export default function Venue() {
                 <path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"
                   fill="currentColor" />
               </svg>
-              Get Directions
+              {t.venue.cta}
             </motion.a>
           </div>
         </motion.div>

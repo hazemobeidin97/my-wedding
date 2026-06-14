@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const PETALS = [
   { id: 0, left: "7%",  delay: 0,    dur: 20, pd:  50, ps:  200, size: 14 },
@@ -33,6 +34,7 @@ const petalCSS = PETALS.map(p => `
 `).join("");
 
 export default function Hero() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -100,9 +102,9 @@ export default function Hero() {
             textShadow: "0 2px 20px rgba(0,0,0,0.55)",
           }}
         >
-          <span style={{ display: "block" }}>Layla</span>
-          <span style={{ display: "block", fontStyle: "italic", fontWeight: 400, letterSpacing: "0.1em", opacity: 0.65, lineHeight: 1.1, fontSize: "0.42em" }}>&amp;</span>
-          <span style={{ display: "block" }}>Hazem</span>
+          <span style={{ display: "block" }}>{t.hero.names.bride}</span>
+          <span style={{ display: "block", fontStyle: "italic", fontWeight: 400, letterSpacing: "0.1em", lineHeight: 1.1, fontSize: "0.42em" }}>{t.hero.names.and}</span>
+          <span style={{ display: "block" }}>{t.hero.names.groom}</span>
         </motion.h1>
 
         <motion.p
@@ -112,7 +114,7 @@ export default function Hero() {
           className="font-body tracking-[0.5em] uppercase mt-3"
           style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
-          We&rsquo;re Getting Married
+          {t.hero.tagline}
         </motion.p>
 
         <motion.p
@@ -122,7 +124,7 @@ export default function Hero() {
           className="font-body tracking-[0.3em] uppercase mt-2"
           style={{ fontSize: "clamp(9px, 2vw, 11px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
-          August 25, 2026
+          {t.hero.date}
         </motion.p>
       </div>
 

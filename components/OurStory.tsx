@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function r4(n: number) { return parseFloat(n.toFixed(4)); }
 
@@ -38,25 +39,10 @@ function Rose({ delay = 0, size = 80, color = "#C4607A" }: { delay?: number; siz
   );
 }
 
-const STORY = [
-  {
-    label: "How We Met",
-    text: "Two souls found each other when they least expected it, a chance meeting that changed everything.",
-    color: "#C4607A",
-  },
-  {
-    label: "The Proposal",
-    text: "Under the open sky, with a heart full of love, the question was asked and the answer was yes.",
-    color: "#F5EAEC",
-  },
-  {
-    label: "Forever Begins",
-    text: "August 25, 2026, the day we say our vows and begin the greatest adventure of our lives together.",
-    color: "#C4607A",
-  },
-];
+const STORY_COLORS = ["#C4607A", "#F5EAEC", "#C4607A"];
 
 export default function OurStory() {
+  const { t } = useLanguage();
   return (
     <section id="story" className="relative overflow-hidden py-20 sm:py-28"
       style={{ background: "#0E0B08" }}>
@@ -75,11 +61,11 @@ export default function OurStory() {
         >
           <p className="font-body tracking-[0.55em] uppercase mb-3"
             style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(196,96,122,0.55)" }}>
-            Our Love Story
+            {t.story.eyebrow}
           </p>
           <h2 className="font-display select-none"
             style={{ fontSize: "clamp(2.8rem, 10vw, 6.5rem)", color: "#FFFFFF" }}>
-            Our Story
+            {t.story.heading}
           </h2>
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="h-px w-14"
@@ -91,7 +77,7 @@ export default function OurStory() {
         </motion.div>
 
         <div className="space-y-8 sm:space-y-10">
-          {STORY.map((entry, i) => (
+          {t.story.entries.map((entry, i) => (
             <motion.div key={entry.label}
               initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -99,7 +85,7 @@ export default function OurStory() {
               className="flex items-start gap-5 sm:gap-7"
             >
               <div className="flex-shrink-0 mt-1">
-                <Rose delay={i * 0.15} size={52} color={entry.color} />
+                <Rose delay={i * 0.15} size={52} color={STORY_COLORS[i]} />
               </div>
               <div className="flex-1 p-5 sm:p-6"
                 style={{
