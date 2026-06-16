@@ -5,7 +5,6 @@ export const en = {
       { label: "The Day", href: "#timeline" },
       { label: "Venue", href: "#venue" },
       { label: "Gallery", href: "#gallery" },
-      { label: "RSVP", href: "#rsvp" },
     ],
     rsvp: "RSVP",
     toggleMenu: "Toggle menu",
@@ -47,12 +46,10 @@ export const en = {
     eyebrow: "August 25, 2026",
     heading: "The Day",
     events: [
-      { time: "17:00", title: "Guest Arrival", desc: "Welcome to our celebration — find your seat and soak in the atmosphere." },
-      { time: "17:30", title: "Welcome Drinks", desc: "Champagne, cocktails & light refreshments in the garden." },
-      { time: "18:00", title: "Wedding Ceremony", desc: "The sacred moment — our vows, our rings, our forever." },
-      { time: "20:00", title: "Wedding Dinner", desc: "A feast prepared with love, shared with the people we cherish most." },
-      { time: "22:00", title: "Celebration & Dancing", desc: "Music fills the room — dance with us all night long." },
-      { time: "00:00", title: "Special Moments", desc: "A night written in stars, a memory carried forever." },
+      { time: "15:00", title: "Celebration Begins", desc: "We warmly welcome you to join us in celebrating this special occasion." },
+      { time: "16:00", title: "Welcome Speech", desc: "A welcoming address to officially begin the celebration." },
+      { time: "18:00", title: "Dinner", desc: "Let us share a meal and celebrate together." },
+      { time: "22:00", title: "End of the Evening", desc: "Thank you for being part of our special day and making our celebration complete." },
     ],
   },
   notices: {
@@ -72,7 +69,7 @@ export const en = {
       {
         label: "Unplugged Ceremony",
         title: "We've Got This Covered",
-        text: "We kindly invite you to put away your phones and be fully present with us on our special day. A professional photography team has been hired to capture every precious moment, so you can relax and enjoy the celebration with us. We look forward to sharing these beautiful memories with you afterward.",
+        text: "The most beautiful memories are held in our hearts. We kindly ask that you put your phones away and be fully present with us. We'll take care of capturing the special moments.",
       },
     ],
   },
@@ -83,7 +80,7 @@ export const en = {
     addressLine1: "Wambeler Hellweg 131",
     addressLine2: "44135 Dortmund, Germany",
     date: "Tuesday, August 25 · 2026",
-    doors: "Doors open at 17:00",
+    doors: "Doors open at 15:00",
     cta: "Get Directions",
   },
   gallery: {

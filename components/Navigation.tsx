@@ -31,8 +31,8 @@ export default function Navigation() {
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
 
-        <a href="#home" className="font-display text-2xl sm:text-3xl leading-none select-none"
-          style={{ color: "rgba(201,169,110,0.8)" }}>
+        <a href="#home" dir="ltr" className="text-2xl sm:text-3xl leading-none select-none"
+          style={{ color: "rgba(201,169,110,0.8)", fontFamily: "var(--font-great-vibes)" }}>
           L &amp; H
         </a>
 
