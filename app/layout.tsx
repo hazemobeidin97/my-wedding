@@ -48,9 +48,7 @@ const tajawal = Tajawal({
   weight: ["300", "400", "500", "700"],
 });
 
-const siteUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const siteUrl = "https://laylahazemwedding.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
