@@ -59,21 +59,12 @@ export const metadata: Metadata = {
     description: "Join us as we celebrate our love · August 25, 2026",
     url: siteUrl,
     siteName: "Layla & Hazem Wedding",
-    images: [
-      {
-        url: "/photos/proposal.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Layla & Hazem",
-      },
-    ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Layla & Hazem — Wedding",
     description: "Join us as we celebrate our love · August 25, 2026",
-    images: ["/photos/proposal.jpg"],
   },
 };
 
