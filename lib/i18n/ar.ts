@@ -99,8 +99,9 @@ export const ar: Dictionary = {
   },
   video: {
     eyebrow: "نعيش الليلة من جديد",
-    heading: "لحظتنا",
+    heading: "شعورنا",
     playHint: "اضغط على التلفاز للتشغيل",
+    replay: "أعد التشغيل",
     quote: "«كل قصة حب جميلة، لكن قصتنا هي المفضلة لديّ.»",
   },
   rsvp: {
@@ -111,6 +112,7 @@ export const ar: Dictionary = {
       name: "الاسم الكامل",
       email: "البريد الإلكتروني",
       phone: "رقم الهاتف",
+      guestName: "اسم الضيف الكامل",
       message: "رسالة للعروسين (اختياري)",
     },
     errors: {
@@ -118,13 +120,15 @@ export const ar: Dictionary = {
       email: "البريد الإلكتروني مطلوب",
       phone: "رقم الهاتف مطلوب",
       attending: "يرجى تحديد الحضور",
+      guestName: "اسم الضيف مطلوب",
     },
     attendQuestion: "هل ستحضرون؟",
     attendance: {
       accept: "يسعدنا الحضور",
       decline: "نأسف، يتعذر الحضور",
     },
-    guestOptions: ["ضيف واحد", "ضيفان", "3 ضيوف", "4 ضيوف", "5 ضيوف"],
+    guestQuestion: "كم عدد الحاضرين؟",
+    guestOptions: ["وحدي", "أنا وضيف"],
     sendError: "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     sending: "جارٍ الإرسال…",
     submit: "إرسال التأكيد",

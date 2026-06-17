@@ -18,7 +18,7 @@ const ATTENDING_EMAIL_LABEL: Record<"accept" | "decline", string> = {
 
 type Form = {
   name: string; email: string; phone: string;
-  attending: "" | "accept" | "decline"; guests: string; message: string;
+  attending: "" | "accept" | "decline"; guests: "1" | "2"; guestName: string; message: string;
 };
 
 type FormErrors = Partial<Record<keyof Form, string>>;
@@ -43,7 +43,7 @@ export default function RSVP() {
   const { t } = useLanguage();
   useEffect(() => { emailjs.init({ publicKey: EMAILJS_KEY }); }, []);
 
-  const [form, setForm]           = useState<Form>({ name: "", email: "", phone: "", attending: "", guests: "1", message: "" });
+  const [form, setForm]           = useState<Form>({ name: "", email: "", phone: "", attending: "", guests: "1", guestName: "", message: "" });
   const [errors, setErrors]       = useState<FormErrors>({});
   const [focused, setFocused]     = useState<string | null>(null);
   const [loading, setLoading]     = useState(false);
@@ -58,6 +58,8 @@ export default function RSVP() {
     if (!form.email.trim()) e.email     = t.rsvp.errors.email;
     if (!form.phone.trim()) e.phone     = t.rsvp.errors.phone;
     if (!form.attending)    e.attending = t.rsvp.errors.attending;
+    if (form.attending === "accept" && form.guests === "2" && !form.guestName.trim())
+      e.guestName = t.rsvp.errors.guestName;
     return e;
   };
 
@@ -75,6 +77,7 @@ export default function RSVP() {
         guest_phone:   form.phone,
         attending:     ATTENDING_EMAIL_LABEL[form.attending as "accept" | "decline"],
         guest_count:   form.attending === "accept" ? form.guests : "—",
+        guest2_name:   form.attending === "accept" && form.guests === "2" ? form.guestName : "—",
         guest_message: form.message || "—",
       });
       setSubmitted(true);
@@ -212,17 +215,47 @@ export default function RSVP() {
               <AnimatePresence>
                 {form.attending === "accept" && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35 }}>
-                    <select value={form.guests}
-                      onFocus={() => setFocused("guests")} onBlur={() => setFocused(null)}
-                      onChange={e => set("guests", e.target.value)}
-                      style={{ ...fieldStyle("guests"), cursor: "pointer" }}>
-                      {[1, 2, 3, 4, 5].map(n => (
-                        <option key={n} value={n} style={{ background: "#0E0B08" }}>
-                          {t.rsvp.guestOptions[n - 1]}
-                        </option>
-                      ))}
-                    </select>
+                    exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35 }} className="space-y-5">
+                    <div>
+                      <p className="font-body tracking-[0.35em] uppercase mb-4"
+                        style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(245,237,232,0.3)" }}>
+                        {t.rsvp.guestQuestion}
+                      </p>
+                      <div className="flex flex-col gap-0.5">
+                        {(["1", "2"] as const).map((n, i) => (
+                          <label key={n} className="flex items-center gap-4 cursor-pointer" style={{ minHeight: "48px" }}
+                            onClick={() => set("guests", n)}>
+                            <div className="flex-shrink-0 flex items-center justify-center transition-all duration-300"
+                              style={{
+                                width: 20, height: 20, borderRadius: "50%",
+                                border: `1px solid ${form.guests === n ? "rgba(201,169,110,0.8)" : "rgba(245,237,232,0.15)"}`,
+                                background: form.guests === n ? "rgba(201,169,110,0.12)" : "transparent",
+                              }}>
+                              {form.guests === n && (
+                                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(201,169,110,0.95)" }} />
+                              )}
+                            </div>
+                            <span className="font-body text-sm transition-colors duration-300"
+                              style={{ color: form.guests === n ? "rgba(245,237,232,0.88)" : "rgba(245,237,232,0.35)" }}>
+                              {t.rsvp.guestOptions[i]}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <AnimatePresence>
+                      {form.guests === "2" && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35 }}>
+                          <input type="text" placeholder={t.rsvp.placeholders.guestName} value={form.guestName}
+                            onFocus={() => setFocused("guestName")} onBlur={() => setFocused(null)}
+                            onChange={e => set("guestName", e.target.value)}
+                            style={fieldStyle("guestName")} className="placeholder-white/20" />
+                          {errors.guestName && <p className="mt-1 text-xs font-body" style={{ color: "rgba(220,90,90,0.85)" }}>{errors.guestName}</p>}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 )}
               </AnimatePresence>

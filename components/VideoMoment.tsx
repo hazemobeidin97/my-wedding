@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, type MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
@@ -9,6 +9,7 @@ type Phase = "off" | "starting" | "on";
 export default function VideoMoment() {
   const { t } = useLanguage();
   const [phase, setPhase] = useState<Phase>("off");
+  const [ended, setEnded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handlePowerOn = useCallback(() => {
@@ -19,6 +20,14 @@ export default function VideoMoment() {
     }
     setPhase("starting");
   }, [phase]);
+
+  const handleReplay = useCallback((e: MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    videoRef.current.currentTime = 0;
+    videoRef.current.play().catch(() => {});
+    setEnded(false);
+  }, []);
 
   useEffect(() => {
     if (phase !== "starting") return;
@@ -144,7 +153,7 @@ export default function VideoMoment() {
 
             <div className="rounded-xl overflow-hidden"
               style={{ background: "#000", padding: "3px", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.9), 0 0 0 3px #0d0805" }}>
-              <div className="relative rounded-lg overflow-hidden bg-black" style={{ aspectRatio: "16/9" }}>
+              <div className="relative rounded-lg overflow-hidden bg-black" style={{ aspectRatio: "1072/720" }}>
 
                 <AnimatePresence>
                   {phase === "off" && (
@@ -189,11 +198,59 @@ export default function VideoMoment() {
                 )}
 
                 <motion.video ref={videoRef} src="/video/wedding.mp4"
-                  loop playsInline preload="auto"
+                  playsInline preload="auto"
+                  onEnded={() => setEnded(true)}
                   className="w-full h-full object-contain"
-                  animate={{ opacity: phase === "on" ? 1 : 0 }}
-                  transition={{ duration: 0.55 }}
+                  animate={{
+                    opacity: phase === "on" ? 1 : 0,
+                    filter: ended ? "brightness(0.4) saturate(0.55)" : "brightness(1) saturate(1)",
+                  }}
+                  transition={{
+                    opacity: { duration: 0.55 },
+                    filter: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
+                  }}
                 />
+
+                <AnimatePresence>
+                  {phase === "on" && ended && (
+                    <motion.div
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      transition={{ duration: 1.1 }}
+                      className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4"
+                      style={{ background: "radial-gradient(ellipse at center, rgba(20,12,9,0.25) 0%, rgba(8,4,2,0.7) 100%)" }}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.6 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="w-1.5 h-1.5 rotate-45"
+                        style={{ background: "rgba(201,169,110,0.55)" }}
+                      />
+                      <motion.button
+                        type="button"
+                        onClick={handleReplay}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.96 }}
+                        className="flex items-center gap-2 rounded-full px-5 py-2.5 font-body tracking-[0.15em] uppercase cursor-pointer"
+                        style={{
+                          fontSize: "11px",
+                          color: "rgba(245,237,232,0.85)",
+                          background: "rgba(255,255,255,0.06)",
+                          border: "1px solid rgba(201,169,110,0.3)",
+                        }}
+                      >
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                          <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.88M13.5 2v3.5H10"
+                            stroke="rgba(245,237,232,0.85)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        {t.video.replay}
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <div className="absolute inset-0 pointer-events-none z-10"
                   style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)" }} />

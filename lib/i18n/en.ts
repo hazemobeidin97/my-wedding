@@ -97,8 +97,9 @@ export const en = {
   },
   video: {
     eyebrow: "Relive The Night",
-    heading: "Our Moment",
+    heading: "Our Feeling",
     playHint: "Click the TV to play",
+    replay: "Watch Again",
     quote: "“Every love story is beautiful — but ours is my favourite.”",
   },
   rsvp: {
@@ -109,6 +110,7 @@ export const en = {
       name: "Full Name",
       email: "Email Address",
       phone: "Phone Number",
+      guestName: "Guest's Full Name",
       message: "A message for the couple (optional)",
     },
     errors: {
@@ -116,13 +118,15 @@ export const en = {
       email: "Email is required",
       phone: "Phone is required",
       attending: "Please select attendance",
+      guestName: "Guest's name is required",
     },
     attendQuestion: "Will you attend?",
     attendance: {
       accept: "Joyfully Accepts",
       decline: "Regretfully Declines",
     },
-    guestOptions: ["1 Guest", "2 Guests", "3 Guests", "4 Guests", "5 Guests"],
+    guestQuestion: "How many will attend?",
+    guestOptions: ["Just Me", "Me + Guest"],
     sendError: "Something went wrong. Please try again.",
     sending: "Sending…",
     submit: "Send RSVP",
