@@ -31,22 +31,11 @@ export default function Navigation() {
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
 
-        <a href="#home" dir="ltr" className="text-2xl sm:text-3xl leading-none select-none"
-          style={{ color: "rgba(201,169,110,0.8)", fontFamily: "var(--font-great-vibes)" }}>
-          L &amp; H
-        </a>
-
-        <div className="hidden md:flex items-center gap-8">
-          {links.map(l => (
-            <a key={l.label} href={l.href}
-              className="font-body text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
-              style={{ color: "rgba(245,237,232,0.5)" }}
-              onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(201,169,110,0.85)")}
-              onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(245,237,232,0.5)")}
-            >
-              {l.label}
-            </a>
-          ))}
+        <div className="flex items-center gap-3">
+          <a href="#home" dir="ltr" className="text-2xl sm:text-3xl leading-none select-none"
+            style={{ color: "rgba(201,169,110,0.8)", fontFamily: "var(--font-great-vibes)" }}>
+            L &amp; H
+          </a>
 
           <button
             onClick={toggleLocale}
@@ -70,6 +59,19 @@ export default function Navigation() {
           >
             {otherLanguageLabel}
           </button>
+        </div>
+
+        <div className="hidden md:flex items-center gap-8">
+          {links.map(l => (
+            <a key={l.label} href={l.href}
+              className="font-body text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
+              style={{ color: "rgba(245,237,232,0.5)" }}
+              onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(201,169,110,0.85)")}
+              onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(245,237,232,0.5)")}
+            >
+              {l.label}
+            </a>
+          ))}
 
           <a href="#rsvp"
             className="font-body text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300"
@@ -129,13 +131,6 @@ export default function Navigation() {
                   {l.label}
                 </a>
               ))}
-              <button
-                onClick={() => { toggleLocale(); setOpen(false); }}
-                className="font-body text-[11px] uppercase py-4 text-center transition-colors duration-300"
-                style={{ color: "rgba(201,169,110,0.7)" }}
-              >
-                {otherLanguageLabel}
-              </button>
             </div>
           </motion.div>
         )}

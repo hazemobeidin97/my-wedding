@@ -30,7 +30,7 @@ export default function Notices() {
           className="text-center mb-12 sm:mb-16"
         >
           <p className="font-body tracking-[0.55em] uppercase mb-3"
-            style={{ fontSize: "clamp(10px, 2.4vw, 12px)", color: "rgba(201,169,110,0.55)" }}>
+            style={{ fontSize: "clamp(13px, 2.8vw, 16px)", color: "rgba(201,169,110,0.55)" }}>
             {t.notices.eyebrow}
           </p>
           <h2 className="font-display select-none"
@@ -71,7 +71,7 @@ export default function Notices() {
                 </div>
               )}
               <p className="font-body tracking-[0.35em] uppercase mb-3"
-                style={{ fontSize: "clamp(10px, 2.4vw, 12px)", color: "rgba(201,169,110,0.55)" }}>
+                style={{ fontSize: "clamp(12px, 2.8vw, 14px)", color: "rgba(201,169,110,0.55)" }}>
                 {n.label}
               </p>
               <h3 className="font-heading mb-3"
@@ -103,7 +103,7 @@ export default function Notices() {
           </div>
           <div>
             <p className="font-body tracking-[0.35em] uppercase mb-3"
-              style={{ fontSize: "clamp(10px, 2.4vw, 12px)", color: "rgba(201,169,110,0.55)" }}>
+              style={{ fontSize: "clamp(12px, 2.8vw, 14px)", color: "rgba(201,169,110,0.55)" }}>
               {unplugged.label}
             </p>
             <h3 className="font-heading mb-3"

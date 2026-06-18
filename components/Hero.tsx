@@ -112,7 +112,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.05 }}
           className="font-body tracking-[0.5em] uppercase mt-3"
-          style={{ fontSize: "clamp(11px, 2.4vw, 13px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
+          style={{ fontSize: "clamp(14px, 3vw, 17px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
           {t.hero.tagline}
         </motion.p>
@@ -122,7 +122,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
           className="font-body tracking-[0.3em] uppercase mt-2"
-          style={{ fontSize: "clamp(11px, 2.4vw, 13px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
+          style={{ fontSize: "clamp(14px, 3vw, 17px)", color: "rgba(125,103,71,1)", fontWeight: 700 }}
         >
           {t.hero.date}
         </motion.p>

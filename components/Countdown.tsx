@@ -76,7 +76,7 @@ export default function Countdown() {
                   style={{ background: "rgba(201,169,110,0.45)" }} />
               </div>
               <span className="font-body tracking-[0.3em] uppercase mt-5"
-                style={{ fontSize: "clamp(9px, 2.4vw, 11px)", color: "rgba(245,237,232,0.3)" }}>
+                style={{ fontSize: "clamp(12px, 2.8vw, 14px)", color: "rgba(245,237,232,0.3)" }}>
                 {label}
               </span>
             </motion.div>

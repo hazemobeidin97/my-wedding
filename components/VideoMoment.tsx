@@ -62,7 +62,7 @@ export default function VideoMoment() {
           className="mb-10 sm:mb-16"
         >
           <p className="font-body tracking-[0.5em] uppercase mb-4"
-            style={{ fontSize: "clamp(9px, 2.4vw, 13px)", color: "rgba(201,169,110,0.5)" }}>
+            style={{ fontSize: "clamp(12px, 2.8vw, 16px)", color: "rgba(201,169,110,0.5)" }}>
             {t.video.eyebrow}
           </p>
           <h2 className="font-display select-none"
