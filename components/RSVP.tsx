@@ -133,7 +133,7 @@ export default function RSVP() {
           className="text-center mb-14 sm:mb-20"
         >
           <p className="font-body tracking-[0.55em] uppercase mb-4"
-            style={{ fontSize: "clamp(7px, 2vw, 10px)", color: "rgba(201,169,110,0.52)" }}>
+            style={{ fontSize: "clamp(9px, 2.4vw, 12px)", color: "rgba(201,169,110,0.52)" }}>
             {t.rsvp.eyebrow}
           </p>
           <h2 className="font-display select-none"
@@ -185,7 +185,7 @@ export default function RSVP() {
 
               <div>
                 <p className="font-body tracking-[0.35em] uppercase mb-4"
-                  style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(245,237,232,0.3)" }}>
+                  style={{ fontSize: "clamp(9px, 2.4vw, 11px)", color: "rgba(245,237,232,0.3)" }}>
                   {t.rsvp.attendQuestion}
                 </p>
                 {errors.attending && <p className="mb-2 text-xs font-body" style={{ color: "rgba(220,90,90,0.85)" }}>{errors.attending}</p>}
@@ -218,7 +218,7 @@ export default function RSVP() {
                     exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35 }} className="space-y-5">
                     <div>
                       <p className="font-body tracking-[0.35em] uppercase mb-4"
-                        style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(245,237,232,0.3)" }}>
+                        style={{ fontSize: "clamp(9px, 2.4vw, 11px)", color: "rgba(245,237,232,0.3)" }}>
                         {t.rsvp.guestQuestion}
                       </p>
                       <div className="flex flex-col gap-0.5">

@@ -54,7 +54,7 @@ export default function Venue() {
           }}
         >
           <p className="font-body tracking-[0.55em] uppercase mb-4 text-center"
-            style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(201,169,110,0.55)" }}>
+            style={{ fontSize: "clamp(9px, 2.4vw, 11px)", color: "rgba(201,169,110,0.55)" }}>
             {t.venue.eyebrow}
           </p>
 

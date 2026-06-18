@@ -42,7 +42,7 @@ export default function Gallery() {
       >
         <div className="absolute top-0 left-0 right-0 h-px"
           style={{ background: "linear-gradient(to right, transparent, rgba(201,169,110,0.2), transparent)" }} />
-        <p className="font-body text-[10px] tracking-[0.55em] uppercase mb-4"
+        <p className="font-body text-[12px] tracking-[0.55em] uppercase mb-4"
           style={{ color: "rgba(201,169,110,0.52)" }}>
           {t.gallery.eyebrow}
         </p>

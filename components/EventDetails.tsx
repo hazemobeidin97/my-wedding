@@ -69,7 +69,7 @@ export default function EventDetails() {
           className="text-center mb-16 sm:mb-24"
         >
           <p className="font-body tracking-[0.55em] uppercase mb-3"
-            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(201,169,110,0.55)" }}>
+            style={{ fontSize: "clamp(10px, 2.4vw, 12px)", color: "rgba(201,169,110,0.55)" }}>
             {t.timeline.eyebrow}
           </p>
           <h2 className="font-display select-none"

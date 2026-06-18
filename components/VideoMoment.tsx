@@ -62,7 +62,7 @@ export default function VideoMoment() {
           className="mb-10 sm:mb-16"
         >
           <p className="font-body tracking-[0.5em] uppercase mb-4"
-            style={{ fontSize: "clamp(7px, 2vw, 11px)", color: "rgba(201,169,110,0.5)" }}>
+            style={{ fontSize: "clamp(9px, 2.4vw, 13px)", color: "rgba(201,169,110,0.5)" }}>
             {t.video.eyebrow}
           </p>
           <h2 className="font-display select-none"
@@ -145,9 +145,6 @@ export default function VideoMoment() {
                 />
                 <div className="w-2 h-2 rounded-full" style={{ background: "rgba(201,169,110,0.2)" }} />
               </div>
-              <span className="font-display text-sm select-none" style={{ color: "rgba(201,169,110,0.38)" }}>
-                H &amp; L
-              </span>
               <div className="w-2 h-2 rounded-full" style={{ background: "rgba(196,112,122,0.15)" }} />
             </div>
 

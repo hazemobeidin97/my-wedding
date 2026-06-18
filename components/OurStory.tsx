@@ -60,7 +60,7 @@ export default function OurStory() {
           className="text-center mb-14 sm:mb-20"
         >
           <p className="font-body tracking-[0.55em] uppercase mb-3"
-            style={{ fontSize: "clamp(8px, 2vw, 10px)", color: "rgba(196,96,122,0.55)" }}>
+            style={{ fontSize: "clamp(10px, 2.4vw, 12px)", color: "rgba(196,96,122,0.55)" }}>
             {t.story.eyebrow}
           </p>
           <h2 className="font-display select-none"
@@ -95,7 +95,7 @@ export default function OurStory() {
                 }}
               >
                 <p className="font-body tracking-[0.3em] uppercase mb-2"
-                  style={{ fontSize: "clamp(7px, 2vw, 9px)", color: "rgba(196,96,122,0.65)" }}>
+                  style={{ fontSize: "clamp(9px, 2.4vw, 11px)", color: "rgba(196,96,122,0.65)" }}>
                   {entry.label}
                 </p>
                 <p className="font-heading"
