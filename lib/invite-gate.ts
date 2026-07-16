@@ -45,10 +45,12 @@ export async function handleInviteGate(
       return NextResponse.redirect(
         new URL("/invite/denied?reason=invalid", request.url)
       );
-    case "denied":
-      return NextResponse.redirect(
-        new URL("/invite/denied?reason=denied", request.url)
-      );
+    case "denied": {
+      const url = new URL("/invite/denied", request.url);
+      url.searchParams.set("reason", "denied");
+      url.searchParams.set("label", result.label);
+      return NextResponse.redirect(url);
+    }
     case "registered": {
       const response = NextResponse.redirect(new URL("/", request.url));
       response.cookies.set(cookieName, result.rawBrowserToken, {

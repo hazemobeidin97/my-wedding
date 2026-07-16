@@ -1,23 +1,28 @@
 type Reason = "invalid" | "denied";
 
-const COPY: Record<Reason, { title: string; body: string }> = {
-  invalid: {
+function copyFor(reason: Reason, label: string | undefined) {
+  if (reason === "denied") {
+    return {
+      title: "This invitation is already in use",
+      body: label
+        ? `This invitation for ${label} has already been used on another device. If ${label} has changed phones or you believe this is an error, please let Hazem & Layla know, and we'll happily reset the invitation.`
+        : "This invitation has already been used on another device. If you've changed phones or you believe this is an error, please let Hazem & Layla know, and we'll happily reset the invitation.",
+    };
+  }
+
+  return {
     title: "Invitation not found",
     body: "This invitation link isn't recognized. Please double-check the link, or reach out to Hazem & Layla directly.",
-  },
-  denied: {
-    title: "Invitation already in use",
-    body: "This invitation is already registered to another device. If you've switched phones or this is a mistake, please contact Hazem & Layla so they can reset it for you.",
-  },
-};
+  };
+}
 
 export default async function InviteDeniedPage({
   searchParams,
 }: {
-  searchParams: Promise<{ reason?: string }>;
+  searchParams: Promise<{ reason?: string; label?: string }>;
 }) {
-  const { reason } = await searchParams;
-  const { title, body } = COPY[reason === "denied" ? "denied" : "invalid"];
+  const { reason, label } = await searchParams;
+  const { title, body } = copyFor(reason === "denied" ? "denied" : "invalid", label);
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-deep px-6 text-pearl">
@@ -28,7 +33,10 @@ export default async function InviteDeniedPage({
           backgroundColor: "#140F0B",
         }}
       >
-        <h1 className="font-heading text-2xl text-gold">{title}</h1>
+        <p className="text-gold" style={{ letterSpacing: "0.2em" }}>
+          ❦
+        </p>
+        <h1 className="mt-3 font-heading text-2xl text-gold">{title}</h1>
         <p className="mt-4 text-sm leading-relaxed text-muted">{body}</p>
       </div>
     </main>

@@ -17,9 +17,9 @@ export type Invite = {
 
 export type GateResult =
   | { status: "invalid" }
-  | { status: "registered"; rawBrowserToken: string }
+  | { status: "registered"; rawBrowserToken: string; label: string }
   | { status: "allowed" }
-  | { status: "denied" };
+  | { status: "denied"; label: string };
 
 const INDEX_KEY = "invites:all";
 const inviteKey = (token: string) => `invite:${token}`;
@@ -117,7 +117,7 @@ export async function registerOrVerify(
     invite.lastUserAgent = userAgent;
     invite.lastIp = logIps ? ip : null;
     await getRedis().set(inviteKey(token), invite);
-    return { status: "registered", rawBrowserToken };
+    return { status: "registered", rawBrowserToken, label: invite.label };
   }
 
   const incomingHash = cookieBrowserToken ? hash(cookieBrowserToken) : null;
@@ -132,5 +132,5 @@ export async function registerOrVerify(
 
   invite.deniedAttempts += 1;
   await getRedis().set(inviteKey(token), invite);
-  return { status: "denied" };
+  return { status: "denied", label: invite.label };
 }
