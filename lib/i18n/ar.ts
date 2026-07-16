@@ -78,7 +78,7 @@ export const ar: Dictionary = {
   venue: {
     eyebrow: "مكان الحفل",
     heading: "أين يُقام الحفل",
-    name: "DIAMANT EVENTHALLE",
+    name: "Phönix Eventhalle",
     addressLine1: "Wambeler Hellweg 131",
     addressLine2: "44135 Dortmund, Germany",
     date: "الثلاثاء، 25 أغسطس · 2026",

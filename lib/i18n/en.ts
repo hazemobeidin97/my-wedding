@@ -76,7 +76,7 @@ export const en = {
   venue: {
     eyebrow: "The Venue",
     heading: "Where It Happens",
-    name: "DIAMANT EVENTHALLE",
+    name: "Phönix Eventhalle",
     addressLine1: "Wambeler Hellweg 131",
     addressLine2: "44135 Dortmund, Germany",
     date: "Tuesday, August 25 · 2026",
