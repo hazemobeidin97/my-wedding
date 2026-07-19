@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Great_Vibes, Playfair_Display, Raleway, Aref_Ruqaa, Amiri, Tajawal } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import VisitorTracker from "@/components/VisitorTracker";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -79,6 +80,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${greatVibes.variable} ${playfair.variable} ${raleway.variable} ${arefRuqaa.variable} ${amiri.variable} ${tajawal.variable}`}
     >
       <body className="bg-deep text-pearl antialiased">
+        <VisitorTracker />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
