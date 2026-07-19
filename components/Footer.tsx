@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
@@ -137,6 +138,11 @@ export default function Footer() {
           style={{ fontSize: "10px", color: "rgba(245,237,232,0.14)", letterSpacing: "0.18em" }}>
           {t.footer.bottomDate}
         </p>
+        <Link href="/privacy"
+          className="font-body inline-block mt-2 uppercase tracking-[0.18em] underline"
+          style={{ fontSize: "9px", color: "rgba(245,237,232,0.14)" }}>
+          Privacy
+        </Link>
       </div>
     </footer>
   );
