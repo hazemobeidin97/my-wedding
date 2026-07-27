@@ -107,7 +107,7 @@ export const ar: Dictionary = {
   rsvp: {
     eyebrow: "شاركونا الاحتفال",
     heading: "تأكيد الحضور",
-    deadline: "يُرجى الرد بحلول 31 يوليو 2026",
+    deadline: "يُرجى الرد بحلول 5 أغسطس 2026",
     placeholders: {
       name: "الاسم الكامل",
       email: "البريد الإلكتروني",

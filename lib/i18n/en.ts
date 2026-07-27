@@ -105,7 +105,7 @@ export const en = {
   rsvp: {
     eyebrow: "Join Our Celebration",
     heading: "RSVP",
-    deadline: "Please respond by July 31, 2026",
+    deadline: "Please respond by August 5, 2026",
     placeholders: {
       name: "Full Name",
       email: "Email Address",
